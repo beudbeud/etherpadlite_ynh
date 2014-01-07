@@ -1,0 +1,44 @@
+{
+    "name": "Etherpad Lite",
+    "id": "etherpadlite",
+    "description": {
+        "en": "online editor providing collaborative editing in really real-time",
+    },
+    "developer": {
+        "name": "beudbeud",
+        "email": "beudbeud@beudibox.fr",
+        "url": "http://etherpad.org/"
+    },
+    "multi_instance": "true",
+    "arguments": {
+        "install" : [
+            {
+                "name": "domain",
+                "ask": {
+                    "en": "Choose a domain for Etherpad"
+                },
+                "example": "domain.org"
+            },
+            {
+                "name": "path",
+                "ask": {
+                    "en": "Choose a path for Etherpad"
+                },
+                "example": "/pad",
+                "default": "/pad"
+            },
+            {
+                "name": "public_site",
+                "ask": {
+                    "en": "Is it a public Etherpad ?"
+                },
+                "choices": ["Yes", "No"],
+                "default": "Yes"
+            }
+
+
+        ]
+    }
+}
+
+

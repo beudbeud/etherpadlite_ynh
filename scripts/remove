@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo rm -rf /var/www/etherpadlite
+sudo rm -f /etc/nginx/conf.d/$domain.d/etherpadlite.conf
+
+

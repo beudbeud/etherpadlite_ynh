@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Retrieve arguments
+domain=$1
+path=$2
+is_public=$3
+
+# Check domain/path availability
+sudo yunohost app checkurl $domain$path -a etherpadlite
+if [[ ! $? -eq 0 ]]; then
+exit 1
+fi
+
+# Install dependances
+apt-get install nodejs npm -y
+
+# Copy files to the right place
+final_path=/var/www/etherpadlite
+sudo mkdir -p $final_path
+sudo cp -a ../sources/* $final_path
+
+# Set permissions to roundcube directory
+sudo chown -R www-data: $final_path
+
+#
+
+# Modify Nginx configuration file and copy it to Nginx conf directory
+sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf*
+sed -i "s@ALIASTOCHANGE@$final_path/@g" ../conf/nginx.conf*
+sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/etherpadlite.conf
+
+# Reload Nginx and regenerate SSOwat conf
+sudo service nginx reload
+if [ $is_public = "Yes" ];
+then
+	sudo yunohost app setting etherpadlite skipped_uris -v "/"
+fi
+sudo yunohost app ssowatconf
