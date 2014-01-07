@@ -2,7 +2,7 @@
     "name": "Etherpad Lite",
     "id": "etherpadlite",
     "description": {
-        "en": "online editor providing collaborative editing in really real-time",
+        "en": "online editor providing collaborative editing in really real-time"
     },
     "developer": {
         "name": "beudbeud",
