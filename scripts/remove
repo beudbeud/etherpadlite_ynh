@@ -1,5 +1,11 @@
 #!/bin/bash
 
+db_user=etherpadlite
+db_name=etherpadlite
+root_pwd=$(sudo cat /etc/yunohost/mysql)
+domain=$(sudo yunohost app setting etherpadlite domain)
+
+mysql -u root -p$root_pwd -e "DROP DATABASE $db_name ; DROP USER $db_user@localhost ;"
 sudo rm -rf /var/www/etherpadlite
 sudo rm -f /etc/nginx/conf.d/$domain.d/etherpadlite.conf
 
