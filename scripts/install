@@ -63,3 +63,4 @@ then
 	sudo yunohost app setting etherpadlite skipped_uris -v "/"
 fi
 sudo yunohost app ssowatconf
+sudo service etherpad-lite start
