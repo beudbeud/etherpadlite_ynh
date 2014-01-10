@@ -25,13 +25,15 @@ sudo yunohost app initdb $db_user -p $db_pwd
 sudo yunohost app setting etherpadlite mysqlpwd -v $db_pwd
 
 # Install dependances
-sudo apt-get install nodejs npm -y
+sudo apt-get install nodejs-legacy npm -y
 
 # Copy files to the right place
 final_path=/var/www/etherpadlite
 sudo mkdir -p $final_path
 sudo cp -a ../sources/* $final_path
 sudo cp ../conf/settings.json $final_path
+
+sudo $final_path/bin/installDeps.sh
 
 # Change variables in Wordpress configuration
 sudo sed -i "s/yunouser/$db_user/g" $final_path/settings.json
