@@ -36,7 +36,7 @@ sudo cp ../conf/etherpad-lite /etc/init.d/
 sudo chmod +x /etc/init.d/etherpad-lite
 sudo update-rc.d etherpad-lite defaults
 sudo mkdir /var/log/etherpad-lite/
-su - www -c "touch /var/log/etherpad-lite/etherpad-lite.log"
+su - www-data -c "touch /var/log/etherpad-lite/etherpad-lite.log"
 
 
 sudo $final_path/bin/installDeps.sh > /dev/null 2>&1
