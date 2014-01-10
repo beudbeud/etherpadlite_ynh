@@ -33,7 +33,8 @@ sudo mkdir -p $final_path
 sudo cp -a ../sources/* $final_path
 sudo cp ../conf/settings.json $final_path
 
-sudo $final_path/bin/installDeps.sh
+sudo $final_path/bin/installDeps.sh > /dev/null 2>&1
+sudo npm install forever -g > /dev/null 2>&1
 
 # Change variables in Wordpress configuration
 sudo sed -i "s/yunouser/$db_user/g" $final_path/settings.json
