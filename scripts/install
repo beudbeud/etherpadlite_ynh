@@ -47,7 +47,7 @@ sudo npm install forever -g > /dev/null 2>&1
 sudo sed -i "s/yunouser/$db_user/g" $final_path/settings.json
 sudo sed -i "s/yunopass/$db_pwd/g" $final_path/settings.json
 sudo sed -i "s/yunobase/$db_user/g" $final_path/settings.json
-sudo sed -i "s/KEY/$db_user/g" $final_path/settings.json
+sudo sed -i "s/KEY/$key/g" $final_path/settings.json
 
 # Set permissions to roundcube directory
 sudo chown -R www-data: $final_path
