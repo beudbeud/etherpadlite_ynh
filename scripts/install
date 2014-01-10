@@ -32,6 +32,12 @@ final_path=/var/www/etherpadlite
 sudo mkdir -p $final_path
 sudo cp -a ../sources/* $final_path
 sudo cp ../conf/settings.json $final_path
+sudo cp ../conf/etherpad-lite /etc/init.d/
+sudo chmod +x /etc/init.d/etherpad-lite
+sudo update-rc.d etherpad-lite defaults
+sudo mkdir /var/log/etherpad-lite/
+su - www -c "touch /var/log/etherpad-lite/etherpad-lite.log"
+
 
 sudo $final_path/bin/installDeps.sh > /dev/null 2>&1
 sudo npm install forever -g > /dev/null 2>&1
