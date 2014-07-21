@@ -42,7 +42,7 @@ sudo mkdir /var/log/etherpad-lite/
 sudo touch /var/log/etherpad-lite/etherpad-lite.log
 sudo chown www-data /var/log/etherpad-lite/etherpad-lite.log
 
-
+sudo npm cache clear
 sudo $final_path/bin/installDeps.sh > /dev/null 2>&1
 sudo npm install forever -g > /dev/null 2>&1
 
