@@ -247,3 +247,112 @@ Things in context:
 
 This hook will allow a plug-in developer to re-write each line when exporting to HTML.
 
+Example:
+```
+var Changeset = require("ep_etherpad-lite/static/js/Changeset");
+
+exports.getLineHTMLForExport = function (hook, context) {
+  var header = _analyzeLine(context.attribLine, context.apool);
+  if (header) {
+    return "<" + header + ">" + context.lineContent + "</" + header + ">";
+  }
+}
+
+function _analyzeLine(alineAttrs, apool) {
+  var header = null;
+  if (alineAttrs) {
+    var opIter = Changeset.opIterator(alineAttrs);
+    if (opIter.hasNext()) {
+      var op = opIter.next();
+      header = Changeset.opAttributeValue(op, 'heading', apool);
+    }
+  }
+  return header;
+}
+```
+
+## stylesForExport
+Called from: src/node/utils/ExportHtml.js
+
+Things in context:
+
+1. padId - The Pad Id
+
+This hook will allow a plug-in developer to append Styles to the Exported HTML.
+
+Example:
+
+```
+exports.stylesForExport = function(hook, padId, cb){
+  cb("body{font-size:13.37em !important}");
+}
+```
+
+## aceAttribClasses
+Called from: src/static/js/linestylefilter.js
+
+Things in context:
+1. Attributes - Object of Attributes
+
+This hook is called when attributes are investigated on a line.  It is useful if you want to add another attribute type or property type to a pad.
+
+Example:
+
+```
+exports.aceAttribClasses = function(hook_name, attr, cb){
+  attr.sub = 'tag:sub';
+  cb(attr);
+}
+```
+
+## exportFileName
+Called from src/node/handler/ExportHandler.js 
+
+Things in context:
+
+1. padId
+
+This hook will allow a plug-in developer to modify the file name of an exported pad.  This is useful if you want to export a pad under another name and/or hide the padId under export.  Note that the doctype or file extension cannot be modified for security reasons.
+
+Example:
+
+```
+exports.exportFileName = function(hook, padId, callback){
+  callback("newFileName"+padId);
+}
+```
+
+## exportHtmlAdditionalTags
+Called from src/node/utils/ExportHtml.js
+
+Things in context:
+
+1. Pad object
+
+This hook will allow a plug-in developer to include more properties and attributes to support during HTML Export.  An Array should be returned.
+
+Example:
+```
+// Add the props to be supported in export
+exports.exportHtmlAdditionalTags = function(hook, pad, cb){
+  var padId = pad.id;
+  cb(["massive","jugs"]);
+};
+```
+
+## userLeave
+Called from src/node/handler/PadMessageHandler.js
+
+This in context:
+
+1. session (including the pad id and author id)
+
+This hook gets called when an author leaves a pad. This is useful if you want to perform certain actions after a pad has been edited
+
+Example:
+
+```
+exports.userLeave = function(hook, session, callback) {
+  console.log('%s left pad %s', session.author, session.padId);
+};
+```
