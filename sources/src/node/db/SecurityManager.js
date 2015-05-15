@@ -20,7 +20,6 @@
 
 
 var ERR = require("async-stacktrace");
-var db = require("./DB").db;
 var async = require("async");
 var authorManager = require("./AuthorManager");
 var padManager = require("./PadManager");
@@ -219,6 +218,12 @@ exports.checkAccess = function (padID, sessionCookie, token, password, callback)
       {
         //- the pad is not password protected
         if(!isPasswordProtected)
+        {
+          //--> grant access
+          statusObject = {accessStatus: "grant", authorID: sessionAuthor};
+        }
+        //- the setting to bypass password validation is set
+        else if(settings.sessionNoPassword)
         {
           //--> grant access
           statusObject = {accessStatus: "grant", authorID: sessionAuthor};
