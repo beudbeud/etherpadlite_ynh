@@ -10,13 +10,12 @@ source /usr/share/yunohost/helpers
 # Retrieve app settings
 domain=$(ynh_app_setting_get "$app" domain)
 path=$(ynh_app_setting_get "$app" path)
-db_user=$(ynh_app_setting_get "$app" db_user)
-db_name=$(ynh_app_setting_get "$app" db_name)
-db_pwd=$(ynh_app_setting_get "$app" db_pwd)
+dbuser=$(ynh_app_setting_get "$app" dbuser)
+dbname=$(ynh_app_setting_get "$app" dbname)
 
 root_pwd=$(sudo cat /etc/yunohost/mysql)
 
-mysql -u root -p$root_pwd -e "DROP DATABASE $db_name ; DROP USER $db_user@localhost ;"
+mysql -u root -p$root_pwd -e "DROP DATABASE $dbname ; DROP USER $dbuser@localhost ;"
 sudo rm -rf /var/www/$app
 
 rm -f /etc/nginx/conf.d/$domain.d/$app.conf
