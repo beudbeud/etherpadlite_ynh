@@ -50,8 +50,8 @@ sudo mkdir -p $final_path
 sudo cp -a ../sources/* $final_path
 sudo cp ../conf/settings.json $final_path
 
-#TODO one service per instance ?
 sudo cp ../conf/etherpad-lite /etc/init.d/$app
+sudo sed -i "s/APPTOCHANGE/$app/g" /etc/init.d/$app
 sudo chmod +x /etc/init.d/$app
 sudo update-rc.d $app defaults
 

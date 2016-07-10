@@ -11,13 +11,13 @@
 ### END INIT INFO
 
 PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/node/bin"
-LOGFILE="/var/log/etherpad-lite/etherpad-lite.log"
-EPLITE_DIR="/var/www/etherpadlite"
+LOGFILE="/var/log/APPTOCHANGE/APPTOCHANGE.log"
+EPLITE_DIR="/var/www/APPTOCHANGE"
 EPLITE_BIN="bin/safeRun.sh"
 USER="www-data"
 GROUP="www-data"
 DESC="Etherpad Lite"
-NAME="etherpad-lite"
+NAME="APPTOCHANGE"
 
 set -e
 
@@ -25,7 +25,7 @@ set -e
 
 start() {
   echo "Starting $DESC... "
-  
+
 	start-stop-daemon --start --chuid "$USER:$GROUP" --background --make-pidfile --pidfile /var/run/$NAME.pid --exec $EPLITE_DIR/$EPLITE_BIN -- $LOGFILE || true
   echo "done"
 }
@@ -53,7 +53,7 @@ stop() {
 }
 
 status() {
-  status_of_proc -p /var/run/$NAME.pid "" "etherpad-lite" && exit 0 || exit $?
+  status_of_proc -p /var/run/$NAME.pid "" "APPTOCHANGE" && exit 0 || exit $?
 }
 
 case "$1" in
