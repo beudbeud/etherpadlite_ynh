@@ -12,10 +12,14 @@ domain=$(ynh_app_setting_get "$app" domain)
 path=$(ynh_app_setting_get "$app" path)
 dbuser=$(ynh_app_setting_get "$app" dbuser)
 dbname=$(ynh_app_setting_get "$app" dbname)
+# dbpass=$(ynh_app_setting_get "$app" dbpass)
 
-root_pwd=$(sudo cat /etc/yunohost/mysql)
 
-mysql -u root -p $root_pwd -e "DROP DATABASE $dbname ; DROP USER $dbuser@localhost ;"
+#mysql -u root -p $root_pwd -e "DROP DATABASE $dbname ; DROP USER $dbuser@localhost ;"
+# Drop MySQL database and user
+ynh_mysql_drop_db "$dbname" || true
+ynh_mysql_drop_user "$dbuser" || true
+
 sudo rm -rf /var/www/$app
 
 sudo rm -f /etc/nginx/conf.d/$domain.d/$app.conf
