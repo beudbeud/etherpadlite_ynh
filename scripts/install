@@ -44,46 +44,49 @@ if ! ynh_package_is_installed "nodejs-legacy" ; then
   sudo apt-get install nodejs-legacy npm -y
 fi
 
-# Copy files to the right place
+# create app dir and compy sources
 final_path=/var/www/$app
 sudo mkdir -p $final_path
+
 sudo cp -a ../sources/* $final_path
+
 sudo cp ../conf/settings.json $final_path
-
-sudo cp ../conf/etherpad-lite /etc/init.d/$app
-sudo sed -i "s/APPTOCHANGE/$app/g" /etc/init.d/$app
-sudo chmod +x /etc/init.d/$app
-sudo update-rc.d $app defaults
-
-sudo mkdir /var/log/$app
-sudo touch /var/log/$app/$app.log
-sudo chown www-data /var/log/$app/$app.log
-
-sudo npm cache clear
-sudo $final_path/bin/installDeps.sh > /dev/null 2>&1
-sudo npm install forever -g > /dev/null 2>&1
-
 # Change variables in etherpad configuration
 sudo sed -i "s/yunouser/$dbuser/g" $final_path/settings.json
 sudo sed -i "s/yunopass/$dbpass/g" $final_path/settings.json
 sudo sed -i "s/yunobase/$dbname/g" $final_path/settings.json
 sudo sed -i "s/KEY/$key/g" $final_path/settings.json
 
+sudo npm cache clear
+sudo $final_path/bin/installDeps.sh > /dev/null 2>&1
+sudo npm install forever -g > /dev/null 2>&1
+
 # Set permissions to etherpad directory
 sudo chown -R www-data: $final_path
 
-# Modify Nginx configuration file and copy it to Nginx conf directory
-sed -i "s@YNH_EXAMPLE_PATH@$path@g" ../conf/nginx.conf
-sed -i "s@YNH_EXAMPLE_PORT@$port@g" ../conf/nginx.conf
-sed -i "s@YNH_EXEMPLE_DOMAIN@$domain@g" ../conf/nginx.conf
+# service
+sudo cp ../conf/etherpad-lite /etc/init.d/$app
+sudo sed -i "s/APPTOCHANGE/$app/g" /etc/init.d/$app
+sudo chmod +x /etc/init.d/$app
+sudo update-rc.d $app defaults
 
+# logs
+sudo mkdir /var/log/$app
+sudo touch /var/log/$app/$app.log
+sudo chown www-data /var/log/$app/$app.log
+
+# nginx
+$nginx_conf_path=/etc/nginx/conf.d/$domain.d/$app.conf
 if [ "$path" = "" ];
 then
-	sudo cp ../conf/nginx.conf-nosub /etc/nginx/conf.d/$domain.d/$app.conf
+	sudo cp ../conf/nginx.conf-nosub $nginx_conf_path
 else
-	sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
+  sudo cp ../conf/nginx.conf $nginx_conf_path
+  # Modify Nginx configuration file and copy it to Nginx conf directory
+  sudo sed -i "s@YNH_EXAMPLE_PATH@$path@g" $nginx_conf_path
+  sudo sed -i "s@YNH_EXAMPLE_PORT@$port@g" $nginx_conf_path
+  sudo sed -i "s@YNH_EXEMPLE_DOMAIN@$domain@g" $nginx_conf_path
 fi
-
 # Reload Nginx and regenerate SSOwat conf
 sudo service nginx reload
 # If app is public, add url to SSOWat conf as skipped_uris
@@ -91,5 +94,7 @@ if [[ $is_public -eq 1 ]]; then
   # unprotected_uris allows SSO credentials to be passed anyway.
   ynh_app_setting_set "$app" unprotected_uris "/"
 fi
+
 sudo yunohost app ssowatconf
+
 sudo service etherpad-lite start
