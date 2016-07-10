@@ -1,18 +1,23 @@
 #!/bin/bash
 
+app=$YNH_APP_INSTANCE_NAME
+
 # Retrieve arguments
-domain=$1
-path=$2
-is_public=$3
+domain=$YNH_APP_ARG_DOMAIN
+path=$YNH_APP_ARG_PATH
+is_public=$YNH_APP_ARG_PUBLIC_SITE
+port=9001
 
 # Check domain/path availability
-sudo yunohost app checkurl $domain$path -a etherpadlite
+sudo yunohost app checkurl $domain$path -a $app
 if [[ ! $? -eq 0 ]]; then
-exit 1
+	exit 1
 fi
 
-# Save specific settings
-sudo yunohost app setting etherpadlite is_public -v $is_public
+# Store config on YunoHost instance
+ynh_app_setting_set $app domain $domain
+ynh_app_setting_set $app domain $path
+ynh_app_setting_set $app domain $is_public
 
 # Remove trailing "/" for next commands
 path=${path%/}
@@ -24,23 +29,28 @@ db_pwd=$(dd if=/dev/urandom bs=1 count=200 2> /dev/null | tr -c -d '[A-Za-z0-9]'
 key=$(dd if=/dev/urandom bs=1 count=200 2> /dev/null | tr -c -d '[A-Za-z0-9]' | sed -n 's/\(.\{40\}\).*/\1/p')
 
 # Use 'etherpadlite' as database name and user
-db_user=etherpadlite
+# TODO change db for mutli-instance
+db_user=$app
 
 # Initialize database and store mysql password for upgrade
 sudo yunohost app initdb $db_user -p $db_pwd
-sudo yunohost app setting etherpadlite mysqlpwd -v $db_pwd
+sudo yunohost app setting $app mysqlpwd -v $db_pwd
 
 # Install dependances
-sudo apt-get install nodejs-legacy npm -y
+if ! ynh_package_is_installed "nodejs-legacy" ; then
+  sudo apt-get install nodejs-legacy npm -y
+fi
 
 # Copy files to the right place
-final_path=/var/www/etherpadlite
+final_path=/var/www/$app
 sudo mkdir -p $final_path
 sudo cp -a ../sources/* $final_path
 sudo cp ../conf/settings.json $final_path
+#TODO one service per instance ?
 sudo cp ../conf/etherpad-lite /etc/init.d/
 sudo chmod +x /etc/init.d/etherpad-lite
 sudo update-rc.d etherpad-lite defaults
+
 sudo mkdir /var/log/etherpad-lite/
 sudo touch /var/log/etherpad-lite/etherpad-lite.log
 sudo chown www-data /var/log/etherpad-lite/etherpad-lite.log
@@ -49,24 +59,27 @@ sudo npm cache clear
 sudo $final_path/bin/installDeps.sh > /dev/null 2>&1
 sudo npm install forever -g > /dev/null 2>&1
 
-# Change variables in Wordpress configuration
+# Change variables in etherpad configuration
 sudo sed -i "s/yunouser/$db_user/g" $final_path/settings.json
 sudo sed -i "s/yunopass/$db_pwd/g" $final_path/settings.json
 sudo sed -i "s/yunobase/$db_user/g" $final_path/settings.json
 sudo sed -i "s/KEY/$key/g" $final_path/settings.json
 
-# Set permissions to roundcube directory
+# Set permissions to etherpad directory
 sudo chown -R www-data: $final_path
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
-sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf*
-sed -i "s@ALIASTOCHANGE@$final_path/@g" ../conf/nginx.conf*
+sed -i "s@YNH_EXAMPLE_PATH@$path@g" ../conf/nginx.conf
+sed -i "s@YNH_EXAMPLE_PORT@$port@g" ../conf/nginx.conf
+sed -i "s@YNH_EXEMPLE_DOMAIN@$domain@g" ../conf/nginx.conf
+
 if [ "$path" = "" ];
 then
-	sudo cp ../conf/nginx.conf-nosub /etc/nginx/conf.d/$domain.d/etherpadlite.conf
+	sudo cp ../conf/nginx.conf-nosub /etc/nginx/conf.d/$domain.d/$app.conf
 else
-	sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/etherpadlite.conf
+	sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
 fi
+
 
 # Reload Nginx and regenerate SSOwat conf
 sudo service nginx reload
