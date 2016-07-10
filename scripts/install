@@ -76,7 +76,7 @@ sudo touch /var/log/$app/$app.log
 sudo chown www-data /var/log/$app/$app.log
 
 # nginx
-$nginx_conf_path=/etc/nginx/conf.d/$domain.d/$app.conf
+nginx_conf_path=/etc/nginx/conf.d/$domain.d/$app.conf
 if [ "$path" = "" ];
 then
 	sudo cp ../conf/nginx.conf-nosub $nginx_conf_path
