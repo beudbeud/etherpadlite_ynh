@@ -115,13 +115,13 @@ var getParameters = [
   { name: "showLineNumbers",  checkVal: "false", callback: function(val) { settings.LineNumbersDisabled = true; } },
   { name: "useMonospaceFont", checkVal: "true",  callback: function(val) { settings.useMonospaceFontGlobal = true; } },
   // If the username is set as a parameter we should set a global value that we can call once we have initiated the pad.
-  { name: "userName",         checkVal: null,    callback: function(val) { settings.globalUserName = decodeURIComponent(val); } },
+  { name: "userName",         checkVal: null,    callback: function(val) { settings.globalUserName = decodeURIComponent(val); clientVars.userName = decodeURIComponent(val); } },
   // If the userColor is set as a parameter, set a global value to use once we have initiated the pad.
-  { name: "userColor",        checkVal: null,    callback: function(val) { settings.globalUserColor = decodeURIComponent(val); } },
+  { name: "userColor",        checkVal: null,    callback: function(val) { settings.globalUserColor = decodeURIComponent(val); clientVars.userColor = decodeURIComponent(val); } },
   { name: "rtl",              checkVal: "true",  callback: function(val) { settings.rtlIsTrue = true } },
   { name: "alwaysShowChat",   checkVal: "true",  callback: function(val) { chat.stickToScreen(); } },
   { name: "chatAndUsers",     checkVal: "true",  callback: function(val) { chat.chatAndUsers(); } },
-  { name: "lang",             checkVal: null,    callback: function(val) { window.html10n.localize([val, 'en']); } }
+  { name: "lang",             checkVal: null,    callback: function(val) { window.html10n.localize([val, 'en']); createCookie('language', val); } }
 ];
 
 function getParams()
@@ -322,6 +322,15 @@ function handshake()
       pad._afterHandshake();
       initalized = true;
 
+      if(clientVars.readonly){
+        chat.hide();
+        $('#myusernameedit').attr("disabled", true);
+        $('#chatinput').attr("disabled", true);
+        $('#chaticon').hide();
+        $('#options-chatandusers').parent().hide();
+        $('#options-stickychat').parent().hide();
+      }
+
       $("body").addClass(clientVars.readonly ? "readonly" : "readwrite")
 
       padeditor.ace.callWithAce(function (ace) {
@@ -456,9 +465,9 @@ var pad = {
   },
   switchToPad: function(padId)
   {
-    var newHref = new RegExp(/.*\/p\/[^\/]+/).exec(document.location.pathname) || clientVars.padId;
-    newHref = newHref[0];    
-    if (options != null){
+    var options = document.location.href.split('?')[1];
+    var newHref = padId;
+    if (typeof options != "undefined" && options != null){
       newHref = newHref + '?' + options;
     }
 
@@ -504,7 +513,6 @@ var pad = {
   _afterHandshake: function()
   {
     pad.clientTimeOffset = new Date().getTime() - clientVars.serverTimestamp;
-  
     //initialize the chat
     chat.init(this);
     getParams();
@@ -512,11 +520,6 @@ var pad = {
     padcookie.init(); // initialize the cookies
     pad.initTime = +(new Date());
     pad.padOptions = clientVars.initialOptions;
-
-    if ((!browser.msie) && (!(browser.firefox && browser.version.indexOf("1.8.") == 0)))
-    {
-      document.domain = document.domain; // for comet
-    }
 
     // for IE
     if (browser.msie)
