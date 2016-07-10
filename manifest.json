@@ -10,7 +10,7 @@
     "license":"free",
     "maintainer": {
         "name": "beudbeud",
-        "email": "beudbeud@beudibox.fr",
+        "email": "beudbeud@beudibox.fr"
     },
     "requirements": {
       "yunohost": ">= 2.4.0"

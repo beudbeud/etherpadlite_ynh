@@ -2,6 +2,9 @@
 
 app=$YNH_APP_INSTANCE_NAME
 
+# Source YunoHost helpers
+source /usr/share/yunohost/helpers
+
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
 path=$YNH_APP_ARG_PATH
@@ -15,26 +18,23 @@ if [[ ! $? -eq 0 ]]; then
 fi
 
 # Store config on YunoHost instance
-ynh_app_setting_set $app domain $domain
-ynh_app_setting_set $app domain $path
-ynh_app_setting_set $app domain $is_public
+ynh_app_setting_set "$app" domain "$domain"
+ynh_app_setting_set "$app" path "$path"
+ynh_app_setting_set "$app" is_public "$is_public"
 
 # Remove trailing "/" for next commands
 path=${path%/}
 
-# Generate random password
-db_pwd=$(dd if=/dev/urandom bs=1 count=200 2> /dev/null | tr -c -d '[A-Za-z0-9]' | sed -n 's/\(.\{24\}\).*/\1/p')
-
 # Generate random key
-key=$(dd if=/dev/urandom bs=1 count=200 2> /dev/null | tr -c -d '[A-Za-z0-9]' | sed -n 's/\(.\{40\}\).*/\1/p')
+# key=$(dd if=/dev/urandom bs=1 count=200 2> /dev/null | tr -c -d '[A-Za-z0-9]' | sed -n 's/\(.\{40\}\).*/\1/p')
+key=$(ynh_string_random 12)
 
-# Use 'etherpadlite' as database name and user
-# TODO change db for mutli-instance
-db_user=$app
-
-# Initialize database and store mysql password for upgrade
-sudo yunohost app initdb $db_user -p $db_pwd
-sudo yunohost app setting $app mysqlpwd -v $db_pwd
+# Generate MySQL password and create database
+dbuser=$app
+dbname=$app
+dbpass=$(ynh_string_random 12)
+ynh_app_setting_set "$app" mysqlpwd "$dbpass"
+ynh_mysql_create_db "$dbname" "$dbuser" "$dbpass"
 
 # Install dependances
 if ! ynh_package_is_installed "nodejs-legacy" ; then
@@ -46,14 +46,15 @@ final_path=/var/www/$app
 sudo mkdir -p $final_path
 sudo cp -a ../sources/* $final_path
 sudo cp ../conf/settings.json $final_path
-#TODO one service per instance ?
-sudo cp ../conf/etherpad-lite /etc/init.d/
-sudo chmod +x /etc/init.d/etherpad-lite
-sudo update-rc.d etherpad-lite defaults
 
-sudo mkdir /var/log/etherpad-lite/
-sudo touch /var/log/etherpad-lite/etherpad-lite.log
-sudo chown www-data /var/log/etherpad-lite/etherpad-lite.log
+#TODO one service per instance ?
+sudo cp ../conf/etherpad-lite /etc/init.d/$app
+sudo chmod +x /etc/init.d/$app
+sudo update-rc.d $app defaults
+
+sudo mkdir /var/log/$app
+sudo touch /var/log/$app/$app.log
+sudo chown www-data /var/log/$app/$app.log
 
 sudo npm cache clear
 sudo $final_path/bin/installDeps.sh > /dev/null 2>&1
@@ -80,12 +81,12 @@ else
 	sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
 fi
 
-
 # Reload Nginx and regenerate SSOwat conf
 sudo service nginx reload
-if [ "$is_public" = "Yes" ];
-then
-	sudo yunohost app setting etherpadlite unprotected_uris -v "/"
+# If app is public, add url to SSOWat conf as skipped_uris
+if [[ $is_public -eq 1 ]]; then
+  # unprotected_uris allows SSO credentials to be passed anyway.
+  ynh_app_setting_set "$app" unprotected_uris "/"
 fi
 sudo yunohost app ssowatconf
 sudo service etherpad-lite start
