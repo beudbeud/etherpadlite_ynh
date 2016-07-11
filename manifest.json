@@ -42,14 +42,14 @@
                 "default": "/pad"
             },
             {
-                "name": "public_site",
+                "name": "is_public",
+                "type": "boolean",
                 "ask": {
-                    "en": "Is it a public Etherpad ?",
-                    "fr": "Etherpad est-il public?"
+                    "en": "Is it a public application?",
+                    "fr": "Est-ce une application publique ?"
                 },
-                "choices": ["Yes", "No"],
-                "default": "Yes"
-            }
+                "default": true
+            },
         ]
     }
 }
