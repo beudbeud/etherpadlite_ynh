@@ -10,6 +10,7 @@ domain=$(ynh_app_setting_get "$app" domain)
 path=$(ynh_app_setting_get "$app" path)
 dbuser=$(ynh_app_setting_get "$app" dbuser)
 dbname=$(ynh_app_setting_get "$app" dbname)
+is_public=$(ynh_app_setting_get "$app" is_public)
 
 root_pwd=$(sudo cat /etc/yunohost/mysql)
 
