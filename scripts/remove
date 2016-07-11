@@ -1,16 +1,31 @@
 #!/bin/bash
 
-db_user=etherpadlite
-db_name=etherpadlite
-root_pwd=$(sudo cat /etc/yunohost/mysql)
-domain=$(sudo yunohost app setting etherpadlite domain)
 
-mysql -u root -p$root_pwd -e "DROP DATABASE $db_name ; DROP USER $db_user@localhost ;"
-sudo rm -rf /var/www/etherpadlite
-sudo rm -f /etc/nginx/conf.d/$domain.d/etherpadlite.conf
-sudo rm -Rf /var/log/etherpad-lite/
-sudo update-rc.d etherpad-lite remove
-sudo service etherpad-lite stop
-sudo rm /etc/init.d/etherpad-lite
+# See comments in install script
+app=$YNH_APP_INSTANCE_NAME
+
+# Source YunoHost helpers
+source /usr/share/yunohost/helpers
+
+# Retrieve app settings
+domain=$(ynh_app_setting_get "$app" domain)
+path=$(ynh_app_setting_get "$app" path)
+dbuser=$(ynh_app_setting_get "$app" dbuser)
+dbname=$(ynh_app_setting_get "$app" dbname)
+# dbpass=$(ynh_app_setting_get "$app" dbpass)
 
 
+#mysql -u root -p $root_pwd -e "DROP DATABASE $dbname ; DROP USER $dbuser@localhost ;"
+# Drop MySQL database and user
+ynh_mysql_drop_db "$dbname" || true
+ynh_mysql_drop_user "$dbuser" || true
+
+sudo rm -rf /var/www/$app
+
+sudo rm -f /etc/nginx/conf.d/$domain.d/$app.conf
+sudo service nginx reload
+sudo rm -Rf /var/log/$app
+
+sudo update-rc.d $app remove
+sudo service $app stop
+sudo rm /etc/init.d/$app

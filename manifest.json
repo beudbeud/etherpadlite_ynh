@@ -1,44 +1,55 @@
 {
     "name": "Etherpad Lite",
     "id": "etherpadlite",
+    "packaging_format": 1,
     "description": {
-        "en": "online editor providing collaborative editing in really real-time"
+        "en": "online editor providing collaborative editing in really real-time",
+        "fr": "editeur multiutilisiteur en temps réel en ligne"
     },
-    "developer": {
+    "url":"http://etherpad.org/",
+    "license":"free",
+    "maintainer": {
         "name": "beudbeud",
-        "email": "beudbeud@beudibox.fr",
-        "url": "http://etherpad.org/"
+        "email": "beudbeud@beudibox.fr"
+    },
+    "requirements": {
+      "yunohost": ">= 2.4.0"
     },
     "multi_instance": "true",
+    "services":[
+      "nginx",
+      "mysql"
+    ],
     "arguments": {
         "install" : [
             {
                 "name": "domain",
+                "type":"domain",
                 "ask": {
-                    "en": "Choose a domain for Etherpad"
+                    "en": "Choose a domain for Etherpad",
+                    "fr": "Choisissez un domaine pour Etherpad"
                 },
                 "example": "domain.org"
             },
             {
                 "name": "path",
+                "type":"path",
                 "ask": {
-                    "en": "Choose a path for Etherpad"
+                    "en": "Choose a path for Etherpad",
+                    "fr": "Choisissez un chemin pour Etherpad"
                 },
                 "example": "/pad",
                 "default": "/pad"
             },
             {
-                "name": "public_site",
+                "name": "is_public",
+                "type": "boolean",
                 "ask": {
-                    "en": "Is it a public Etherpad ?"
+                    "en": "Is it a public application?",
+                    "fr": "Est-ce une application publique ?"
                 },
-                "choices": ["Yes", "No"],
-                "default": "Yes"
+                "default": true
             }
-
-
         ]
     }
 }
-
-
