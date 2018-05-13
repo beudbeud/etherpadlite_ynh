@@ -12,7 +12,7 @@ is_public=$YNH_APP_ARG_IS_PUBLIC
 port=9001
 
 # Check domain/path availability
-sudo yunohost app checkurl $domain$path -a $app
+sudo yunohost app checkurl	 $domain$path -a $app
 if [[ ! $? -eq 0 ]]; then
 	exit 1
 fi
@@ -44,7 +44,7 @@ if ! ynh_package_is_installed "nodejs-legacy" ; then
   sudo apt-get install nodejs-legacy npm -y
 fi
 
-# create app dir and compy sources
+# create app dir and copy sources
 final_path=/var/www/$app
 sudo mkdir -p $final_path
 
@@ -77,8 +77,7 @@ sudo chown www-data /var/log/$app/$app.log
 
 # nginx
 nginx_conf_path=/etc/nginx/conf.d/$domain.d/$app.conf
-if [ "$path" = "" ];
-then
+if [ "$path" = "" ]; then
 	sudo cp ../conf/nginx.conf-nosub $nginx_conf_path
 else
   sudo cp ../conf/nginx.conf $nginx_conf_path
