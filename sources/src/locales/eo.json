@@ -3,7 +3,8 @@
 		"authors": [
 			"Eliovir",
 			"Mschmitt",
-			"Objectivesea"
+			"Objectivesea",
+			"Robin van der Vliet"
 		]
 	},
 	"index.newPad": "Nova Teksto",
@@ -54,10 +55,12 @@
 	"pad.importExport.exportword": "Microsoft Word",
 	"pad.importExport.exportpdf": "PDF",
 	"pad.importExport.exportopen": "ODF (Formato “OpenDocument”)",
-	"pad.importExport.abiword.innerHTML": "Nur kapablas enporti de plata teksto aŭ HTML. Por pli speciala importkapablo, bonvolu <a href=\"https://github.com/ether/etherpad-lite/wiki/How-to-enable-importing-and-exporting-different-file-formats-in-Ubuntu-or-OpenSuse-or-SLES-with-AbiWord\">instalu la programon, Abiword</a>.",
+	"pad.importExport.abiword.innerHTML": "Nur kapablas enporti de plata teksto aŭ HTML. Por pli speciala importkapablo, bonvolu <a href=\"https://github.com/ether/etherpad-lite/wiki/How-to-enable-importing-and-exporting-different-file-formats-with-AbiWord\">instalu la programon, Abiword</a>.",
 	"pad.modals.connected": "Konektita.",
 	"pad.modals.reconnecting": "Rekonektanta al via redaktilo..",
 	"pad.modals.forcereconnect": "Perforte rekonekti",
+	"pad.modals.reconnecttimer": "Provos rekonekti post",
+	"pad.modals.cancel": "Nuligi",
 	"pad.modals.userdup": "Malfermita en alia fenestro",
 	"pad.modals.userdup.explanation": "Ĉi tiu teksto ŝajne estas malferma en pli ol unu retumilo sur ĉi tiu komputilo.",
 	"pad.modals.userdup.advice": "Rekonekti por anstataŭe uzi ĉi tiun fenestron.",
@@ -120,7 +123,7 @@
 	"pad.userlist.approve": "Aprobi",
 	"pad.editbar.clearcolors": "Forigi kolorojn de aŭtoreco en la tuta dokumento?",
 	"pad.impexp.importbutton": "Enporti Nun",
-	"pad.impexp.importing": "Enportanta...",
+	"pad.impexp.importing": "Enportante...",
 	"pad.impexp.confirmimport": "Enporti dosieron superskribos la nunan tekston en la redaktilo. Ĉu vi certe volas daŭrigi?",
 	"pad.impexp.convertFailed": "Ni ne kapablis enporti tiun dosieron. Bonvolu uzi alian dokumentformaton aŭ permane kopii kaj alglui.",
 	"pad.impexp.padHasData": "Ni ne kapablis enporti tiun dosieron ĉar la teksto jam estas ŝanĝita. Bonvolu enporti en novan tekston.",

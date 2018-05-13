@@ -1,3 +1,75 @@
+# 1.6.6
+ * FIX: line numbers are aligned with text again (broken in 1.6.4)
+ * FIX: text entered between connection loss and reconnection was not saved
+ * FIX: diagnostic call failed when etherpad was exposed in a subdirectory
+
+# 1.6.5
+ * SECURITY: Escape data when listing available plugins
+ * FIX: Fix typo in apicalls.js which prevented importing isValidJSONPName
+ * FIX: fixed plugin dependency issue
+ * FIX: Update iframe_editor.css
+ * FIX: unbreak Safari iOS line wrapping
+
+# 1.6.4
+ * SECURITY: Access Control bypass on /admin - CVE-2018-9845
+ * SECURITY: Remote Code Execution through pad export - CVE-2018-9327
+ * SECURITY: Remote Code Execution through JSONP handling - CVE-2018-9326
+ * SECURITY: Pad data leak - CVE-2018-9325
+ * Fix: Admin redirect URL
+ * Fix: Various script Fixes
+ * Fix: Various CSS/Style/Layout fixes
+ * NEW: Improved Pad contents readability
+ * NEW: Hook: onAccessCheck
+ * NEW: SESSIONKEY and APIKey customizable path
+ * NEW: checkPads script
+ * NEW: Support "cluster mode"
+
+# 1.6.3
+ * SECURITY: Update ejs
+ * SECURITY: xss vulnerability when reading window.location.href
+ * SECURITY: sanitize jsonp
+ * NEW: Catch SIGTERM for graceful shutdown
+ * NEW: Show actual applied text formatting for caret position
+ * NEW: Add settings to improve scrolling of viewport on line changes
+
+# 1.6.2
+ * NEW: Added pad shortcut disabling feature
+ * NEW: Create option to automatically reconnect after a few seconds
+ * Update: socket.io to 1.7.3
+ * Update: l10n lib
+ * Update: request to 2.83.0
+ * Update: Node for windows to 8.9.0
+ * Fix: minification of code
+
+# 1.6.1
+ * NEW: Hook aceRegisterNonScrollableEditEvents to register events that shouldn't scroll
+ * NEW: Added 'item' parameter to registerAceCommand Hook
+ * NEW: Added LibreJS support
+ * Fix: Crash on malformed export url
+ * Fix: Re-enable editor after user is reconnected to server
+ * Fix: minification
+ * Other: Added 'no-referrer' for all pads
+ * Other: Improved cookie security
+ * Other: Fixed compatibility with nodejs 7
+ * Other: Updates
+  - socket.io to 1.6.0
+  - express to 4.13.4
+  - express-session to 1.13.0
+  - clean-css to 3.4.12
+  - uglify-js to 2.6.2
+  - log4js to 0.6.35
+  - cheerio to 0.20.0
+  - ejs to 2.4.1
+  - graceful-fs to 4.1.3
+  - semver to 5.1.0
+  - unorm to 1.4.1
+  - jsonminify to 0.4.1
+  - measured to 1.1.0
+  - mocha to 2.4.5
+  - supertest to 1.2.0
+  - npm to 4.0.2
+  - Node.js for Windows to 6.9.2
+
 # 1.6.0
  * SECURITY: Fix a possible xss attack in iframe link
  * NEW: Add a aceSelectionChanged hook to allow plugins to react when the cursor location changes.
@@ -10,7 +82,7 @@
  * NEW: Allow LibreOffice to be used when exporting a pad
  * NEW: Create hook exportHtmlAdditionalTagsWithData
  * NEW: Improve DB migration performance
- * NEW: allow settings to be applied from the filesystem 
+ * NEW: allow settings to be applied from the filesystem
  * NEW: remove applySettings hook and allow credentials.json to be part of core
  * NEW: Use exec to switch to node process
  * NEW: Validate incoming color codes
@@ -39,7 +111,7 @@
  * Fix: switchToPad method
  * Fix: Dead keys
  * Fix: Preserve new lines in copy-pasted text
- * Fix: Compatibility mode on IE 
+ * Fix: Compatibility mode on IE
  * Fix: Content Collector to get the class of the DOM-node
  * Fix: Timeslider export links
  * Fix: Double prompt on file upload
@@ -166,7 +238,7 @@
  * Fix: Session Deletion error
  * Fix: Allow browser tabs to be cycled when focus is in editor
  * Fix: Various Editor issues with Easysync potentially entering forever loop on bad changeset
- 
+
 # 1.4
  * NEW: Disable toolbar items through settings.json
  * NEW: Internal stats/metrics engine
@@ -198,7 +270,7 @@
 # 1.3
  * NEW: We now follow the semantic versioning scheme!
  * NEW: Option to disable IP logging
- * NEW: Localisation updates from http://translatewiki.net. 
+ * NEW: Localisation updates from http://translatewiki.net.
  * Fix: Fix readOnly group pads
  * Fix: don't fetch padList on every request
 
@@ -291,7 +363,7 @@
  * NEW: Add authorId to chat and userlist as a data attribute
  * NEW: Refactor and fix our frontend tests
  * NEW: Localisation updates
- 
+
 
 # 1.2.81
  * Fix: CtrlZ-Y for Undo Redo
@@ -331,7 +403,7 @@
  * Other: Change loading message asking user to please wait on first build
  * Other: Allow etherpad to use global npm installation (Safe since node 6.3)
  * Other: Better documentation for log rotation and log message handling
- 
+
 
 
 # 1.2.7
