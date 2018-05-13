@@ -11,6 +11,7 @@ path=$(ynh_app_setting_get "$app" path)
 dbuser=$(ynh_app_setting_get "$app" dbuser)
 dbname=$(ynh_app_setting_get "$app" dbname)
 is_public=$(ynh_app_setting_get "$app" is_public)
+port=9001
 
 root_pwd=$(sudo cat /etc/yunohost/mysql)
 
@@ -51,7 +52,6 @@ if [ "$path" = "" ]; then
 else
   sudo cp ../conf/nginx.conf $nginx_conf_path
   # Modify Nginx configuration file and copy it to Nginx conf directory
-  port='9001'
   sudo sed -i "s@YNH_PATH@$path@g" $nginx_conf_path
   sudo sed -i "s@YNH_PORT@$port@g" $nginx_conf_path
   sudo sed -i "s@YNH_DOMAIN@$domain@g" $nginx_conf_path

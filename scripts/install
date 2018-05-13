@@ -82,9 +82,10 @@ if [ "$path" = "" ]; then
 else
   sudo cp ../conf/nginx.conf $nginx_conf_path
   # Modify Nginx configuration file and copy it to Nginx conf directory
-  sudo sed -i "s@YNH_EXAMPLE_PATH@$path@g" $nginx_conf_path
-  sudo sed -i "s@YNH_EXAMPLE_PORT@$port@g" $nginx_conf_path
-  sudo sed -i "s@YNH_EXEMPLE_DOMAIN@$domain@g" $nginx_conf_path
+
+  sudo sed -i "s@YNH_PATH@$path@g" $nginx_conf_path
+  sudo sed -i "s@YNH_PORT@$port@g" $nginx_conf_path
+  sudo sed -i "s@YNH_DOMAIN@$domain@g" $nginx_conf_path
 fi
 # Reload Nginx and regenerate SSOwat conf
 sudo service nginx reload
