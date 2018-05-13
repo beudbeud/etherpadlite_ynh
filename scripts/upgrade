@@ -45,10 +45,9 @@ sudo chmod +x /etc/init.d/$app
 sudo update-rc.d $app defaults
 
 # nginx
-$nginx_conf_path=/etc/nginx/conf.d/$domain.d/$app.conf
-if [ "$path" = "" ];
-then
-	sudo cp ../conf/nginx.conf-nosub $nginx_conf_path
+nginx_conf_path=/etc/nginx/conf.d/$domain.d/$app.conf
+if [ "$path" = "" ]; then
+  sudo cp ../conf/nginx.conf-nosub $nginx_conf_path
 else
   sudo cp ../conf/nginx.conf $nginx_conf_path
   # Modify Nginx configuration file and copy it to Nginx conf directory
