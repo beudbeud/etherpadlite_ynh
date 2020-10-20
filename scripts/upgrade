@@ -1,70 +1,182 @@
 #!/bin/bash
 
-app=$YNH_APP_INSTANCE_NAME
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
-# Source YunoHost helpers
+source _common.sh
 source /usr/share/yunohost/helpers
 
-# Retrieve app settings
-domain=$(ynh_app_setting_get "$app" domain)
-path=$(ynh_app_setting_get "$app" path)
-dbuser=$(ynh_app_setting_get "$app" dbuser)
-dbname=$(ynh_app_setting_get "$app" dbname)
-is_public=$(ynh_app_setting_get "$app" is_public)
-port=9001
+#=================================================
+# LOAD SETTINGS
+#=================================================
+ynh_script_progression --message="Loading installation settings..." --weight=1
 
-root_pwd=$(sudo cat /etc/yunohost/mysql)
+app=$YNH_APP_INSTANCE_NAME
 
-# Remove trailing "/" for next commands
-path=${path%/}
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+path_url=$(ynh_app_setting_get --app=$app --key=path)
+admin=$(ynh_app_setting_get --app=$app --key=admin)
+is_public=$(ynh_app_setting_get --app=$app --key=is_public)
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+language=$(ynh_app_setting_get --app=$app --key=language)
+db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 
+#=================================================
+# CHECK VERSION
+#=================================================
 
-# create app dir and compy sources
-final_path=/var/www/$app
-sudo mkdir -p $final_path
+upgrade_type=$(ynh_check_app_version_changed)
 
-sudo cp -a ../sources/* $final_path
+#=================================================
+# ENSURE DOWNWARD COMPATIBILITY
+#=================================================
+ynh_script_progression --message="Ensuring downward compatibility..." --weight=2
 
-sudo cp ../conf/settings.json $final_path
-# Change variables in etherpad configuration
-sudo sed -i "s/yunouser/$dbuser/g" $final_path/settings.json
-sudo sed -i "s/yunopass/$dbpass/g" $final_path/settings.json
-sudo sed -i "s/yunobase/$dbname/g" $final_path/settings.json
-sudo sed -i "s/KEY/$key/g" $final_path/settings.json
-
-sudo npm cache clear
-sudo $final_path/bin/installDeps.sh > /dev/null 2>&1
-sudo npm install forever -g > /dev/null 2>&1
-
-# Set permissions to etherpad directory
-sudo chown -R www-data: $final_path
-
-# service
-sudo cp ../conf/etherpad-lite /etc/init.d/$app
-sudo sed -i "s/APPTOCHANGE/$app/g" /etc/init.d/$app
-sudo chmod +x /etc/init.d/$app
-sudo update-rc.d $app defaults
-
-# nginx
-nginx_conf_path=/etc/nginx/conf.d/$domain.d/$app.conf
-if [ "$path" = "" ]; then
-  sudo cp ../conf/nginx.conf-nosub $nginx_conf_path
-else
-  sudo cp ../conf/nginx.conf $nginx_conf_path
-  # Modify Nginx configuration file and copy it to Nginx conf directory
-  sudo sed -i "s@YNH_PATH@$path@g" $nginx_conf_path
-  sudo sed -i "s@YNH_PORT@$port@g" $nginx_conf_path
-  sudo sed -i "s@YNH_DOMAIN@$domain@g" $nginx_conf_path
+# Fix is_public as a boolean value
+if [ "$is_public" = "Yes" ]; then
+	ynh_app_setting_set --app=$app --key=is_public --value=1
+	is_public=1
+elif [ "$is_public" = "No" ]; then
+	ynh_app_setting_set --app=$app --key=is_public --value=0
+	is_public=0
 fi
 
-# Reload Nginx and regenerate SSOwat conf
-sudo service nginx reload
-# If app is public, add url to SSOWat conf as skipped_uris
-if [[ $is_public -eq 1 ]]; then
-  # unprotected_uris allows SSO credentials to be passed anyway.
-  ynh_app_setting_set "$app" unprotected_uris "/"
+# If db_name doesn't exist, create it
+if [ -z "$db_name" ]; then
+	db_name=$(ynh_sanitize_dbid --db_name=$app)
+	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 fi
 
-sudo yunohost app ssowatconf
+# If final_path doesn't exist, create it
+if [ -z "$final_path" ]; then
+	final_path=/var/www/$app
+	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+fi
 
-sudo service etherpad-lite start
+#=================================================
+# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
+#=================================================
+ynh_script_progression --message="Backing up Etherpad before upgrading (may take a while)..." --weight=1
+
+# Backup the current version of the app
+ynh_backup_before_upgrade
+ynh_clean_setup () {
+	# restore it if the upgrade fails
+	ynh_restore_upgradebackup
+}
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# STANDARD UPGRADE STEPS
+#=================================================
+# STOP SYSTEMD SERVICE
+#=================================================
+ynh_script_progression --message="Stopping a systemd service..." --weight=42
+
+ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+
+if [ "$upgrade_type" == "UPGRADE_APP" ]
+then
+	ynh_script_progression --message="Upgrading source files..." --weight=1
+
+	# Download, check integrity, uncompress and patch the source from app.src
+	ynh_setup_source --dest_dir="$final_path"
+fi
+
+#=================================================
+# NGINX CONFIGURATION
+#=================================================
+ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=3
+
+# Create a dedicated NGINX config
+ynh_add_nginx_config
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Making sure dedicated system user exists..." --time --weight=1
+
+# Create a dedicated user (if not existing)
+ynh_system_user_create --username=$app
+
+#=================================================
+# INSTALL ETHERPAD
+#=================================================
+ynh_script_progression --message="Installing Etherpad..." --weight=90
+
+chown -R $app: $final_path
+
+pushd "$final_path" || ynh_die
+ 	ynh_use_nodejs
+ 	ynh_exec_as $app env $ynh_node_load_PATH bin/installDeps.sh
+popd || ynh_die 
+
+#=================================================
+# MODIFY A CONFIG FILE
+#=================================================
+ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
+
+cp ../conf/settings.json $final_path/settings.json
+
+ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$final_path/settings.json"
+ynh_replace_string --match_string="__LANGUAGE__" --replace_string="$language" --target_file="$final_path/settings.json"
+
+cp ../conf/credentials.json $final_path/credentials.json
+
+ynh_replace_string --match_string="__DB_NAME__" --replace_string="$db_name" --target_file="$final_path/credentials.json"
+ynh_replace_string --match_string="__DB_PWD__" --replace_string="$db_pwd" --target_file="$final_path/credentials.json"
+ynh_replace_string --match_string="__ADMIN__" --replace_string="$admin" --target_file="$final_path/credentials.json"
+ynh_replace_string --match_string="__PASSWORD__" --replace_string="$password" --target_file="$final_path/credentials.json"
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
+
+# Set permissions on app files
+chown -R $app: $final_path
+chmod 600 $final_path/credentials.json
+
+#=================================================
+# SETUP SYSTEMD
+#=================================================
+ynh_script_progression --message="Upgrading systemd configuration..." --time --weight=1
+
+# Create a dedicated systemd config
+ynh_add_systemd_config --others_var="ynh_node_load_PATH"
+
+#=================================================
+# INTEGRATE SERVICE IN YUNOHOST
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..." --time --weight=1
+
+yunohost service add $app --description "Etherpad-lite, the collaborative editor." --log "/var/log/$app/$app.log"
+
+#=================================================
+# START SYSTEMD SERVICE
+#=================================================
+ynh_script_progression --message="Starting a systemd service..." --time --weight=1
+
+ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log" --line_match="Your Etherpad version is" 
+
+#=================================================
+# RELOAD NGINX
+#=================================================
+ynh_script_progression --message="Reloading NGINX web server..." --weight=2
+
+ynh_systemd_action --service_name=nginx --action=reload
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Upgrade of Etherpad completed" --last

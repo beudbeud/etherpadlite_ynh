@@ -1,31 +1,84 @@
 #!/bin/bash
 
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
-# See comments in install script
-app=$YNH_APP_INSTANCE_NAME
-
-# Source YunoHost helpers
+source _common.sh
 source /usr/share/yunohost/helpers
 
-# Retrieve app settings
-domain=$(ynh_app_setting_get "$app" domain)
-path=$(ynh_app_setting_get "$app" path)
-dbuser=$(ynh_app_setting_get "$app" dbuser)
-dbname=$(ynh_app_setting_get "$app" dbname)
-# dbpass=$(ynh_app_setting_get "$app" dbpass)
+#=================================================
+# LOAD SETTINGS
+#=================================================
+ynh_script_progression --message="Loading installation settings..." --weight=1
 
+app=$YNH_APP_INSTANCE_NAME
 
-#mysql -u root -p $root_pwd -e "DROP DATABASE $dbname ; DROP USER $dbuser@localhost ;"
-# Drop MySQL database and user
-ynh_mysql_drop_db "$dbname" || true
-ynh_mysql_drop_user "$dbuser" || true
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+port=$(ynh_app_setting_get --app=$app --key=port)
+db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+db_user=$db_name
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 
-sudo rm -rf /var/www/$app
+#=================================================
+# STANDARD REMOVE
+#=================================================
+# REMOVE SERVICE INTEGRATION IN YUNOHOST
+#=================================================
 
-sudo rm -f /etc/nginx/conf.d/$domain.d/$app.conf
-sudo service nginx reload
-sudo rm -Rf /var/log/$app
+# Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
+if ynh_exec_warn_less yunohost service status $app >/dev/null
+then
+	ynh_script_progression --message="Removing Etherpad service integration..." --weight=2
+	yunohost service remove $app
+fi
 
-sudo update-rc.d $app remove
-sudo service $app stop
-sudo rm /etc/init.d/$app
+#=================================================
+# STOP AND REMOVE SERVICE
+#=================================================
+ynh_script_progression --message="Stopping and removing the systemd service..." --weight=1
+
+# Remove the dedicated systemd config
+ynh_remove_systemd_config
+
+#=================================================
+# REMOVE THE POSTQRESQL DATABASE
+#=================================================
+ynh_script_progression --message="Removing the PostgreSQL database..." --weight=2
+
+# Remove a database if it exists, along with the associated user
+ynh_psql_remove_db --db_user=$db_user --db_name=$db_name
+
+#=================================================
+# REMOVE ETHERPAD MAIN DIR
+#=================================================
+ynh_script_progression --message="Removing Etherpad main directory..." --weight=3
+
+# Remove the app directory securely
+ynh_secure_remove --file="$final_path"
+
+#=================================================
+# REMOVE NGINX CONFIGURATION
+#=================================================
+ynh_script_progression --message="Removing NGINX web server configuration..." --weight=1
+
+# Remove the dedicated NGINX config
+ynh_remove_nginx_config
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# REMOVE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Removing the dedicated system user..." --weight=1
+
+# Delete a system user
+ynh_system_user_delete --username=$app
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Removal of Etherpad completed" --last
