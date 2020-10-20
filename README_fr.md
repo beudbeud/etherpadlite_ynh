@@ -1,6 +1,6 @@
 # Etherpad pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/etherpad.svg)](https://dash.yunohost.org/appci/app/etherpad) ![](https://ci-apps.yunohost.org/ci/badges/etherpad.status.svg) [![](https://ci-apps.yunohost.org/ci/badges/etherpad.maintain.svg)](https://github.com/YunoHost/Apps/#what-to-do-if-i-cant-maintain-my-app-anymore-)  
+[![Niveau d'intégration](https://dash.yunohost.org/integration/etherpad.svg)](https://dash.yunohost.org/appci/app/etherpad) ![](https://ci-apps.yunohost.org/ci/badges/etherpad.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/etherpad.maintain.svg)  
 [![Installer Etherpad avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=etherpad)
 
 *[Read this readme in english.](./README.md)*
@@ -9,14 +9,13 @@
 Si vous n'avez pas YunoHost, merci de regarder [ici](https://yunohost.org/#/install_fr) pour savoir comment l'installer et en profiter.*
 
 ## Résumé
-Etherpad est un éditeur en ligne Open Source hautement personnalisable qui permet l'édition collaborative en temps réel.  
-Ce paquet installera les mêmes plugins que [Framapad](https://framapad.org/).
+Etherpad vous permet d'éditer des documents de manière collaborative en temps réel, un peu comme un éditeur multi-joueurs en direct qui s'exécute dans votre navigateur. Rédigez des articles, des communiqués de presse, des listes de choses à faire, etc. avec vos amis, camarades ou collègues, tous travaillant sur le même document en même temps.
 
 **Version embarquée :** 1.8.6
 
 ## Captures d'écran
 
-![](https://github.com/ether/etherpad-lite/blob/develop/doc/images/etherpad_demo.gif)
+![](https://etherpad.org/img/etherpad_demo.gif)
 
 ## Démo
 

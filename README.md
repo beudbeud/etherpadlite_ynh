@@ -9,13 +9,13 @@
 If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
 
 ## Overview
-Etherpad is a highly customizable Open Source online editor providing collaborative editing in really real-time.
+Etherpad allows you to edit documents collaboratively in real-time, much like a live multi-player editor that runs in your browser. Write articles, press releases, to-do lists, etc. together with your friends, fellow students or colleagues, all working on the same document at the same time.
 
 **Shipped version:** 1.8.6
 
 ## Screenshots
 
-![](https://github.com/ether/etherpad/blob/develop/doc/images/etherpad_demo.gif)
+![](https://etherpad.org/img/etherpad_demo.gif)
 
 ## Demo
 
