@@ -1,7 +1,6 @@
 # Etherpad for YunoHost
 
->[!WARNING]
->This package installs Etherpad-Lite (without plugins) and uses PostgeSQL as a database.
+> :warning:This package installs Etherpad-Lite (without plugins) and uses PostgeSQL as a database.
 >If you want to install Etherpad with the MyPads plugin, use this [package](https://github.com/YunoHost-Apps/etherpad_mypads_ynh).
 
 [![Integration level](https://dash.yunohost.org/integration/etherpad.svg)](https://dash.yunohost.org/appci/app/etherpad) ![](https://ci-apps.yunohost.org/ci/badges/etherpad.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/etherpad.maintain.svg)  
