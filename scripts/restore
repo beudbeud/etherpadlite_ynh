@@ -112,7 +112,7 @@ yunohost service add $app --description "Etherpad-lite, the collaborative editor
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=8
 
-ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log" --line_match="Your Etherpad version is" --timeout="120" 
 
 #=================================================
 # GENERIC FINALIZATION
