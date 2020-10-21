@@ -26,6 +26,7 @@ db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 db_user=$db_name
 db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
 port=$(ynh_app_setting_get --app=$app --key=port)
+password=$(ynh_app_setting_get --app=$app --key=password)
 
 #=================================================
 # CHECK VERSION
