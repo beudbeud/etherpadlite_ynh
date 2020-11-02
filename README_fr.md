@@ -1,4 +1,7 @@
-# Etherpad pour YunoHost
+# Etherpad-Lite pour YunoHost
+
+> :warning: Ce paquet installe Etherpad-Lite (sans MyPads et divers plugins). Il utilise PostgreSQL comme base de données.
+> Si vous souhaitez installer Etherpad avec MyPads, utilisez le paquet [Etherpad MyPads](https://github.com/YunoHost-Apps/etherpad_mypads_ynh).
 
 [![Niveau d'intégration](https://dash.yunohost.org/integration/etherpad.svg)](https://dash.yunohost.org/appci/app/etherpad) ![](https://ci-apps.yunohost.org/ci/badges/etherpad.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/etherpad.maintain.svg)  
 [![Installer Etherpad avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=etherpad)
@@ -23,9 +26,9 @@ Etherpad vous permet d'éditer des documents de manière collaborative en temps 
 
 ## Configuration
 
-Vous pouvez accéder à deux panneaux d'administration différents, pour Etherpad en accédant à `domain.tld/admin` et pour MyPads par `domain.tld/mypads/?/admin`. Vous pouvez également trouver le fichier de configuration pour Etherpad à `/var/www/etherpad/settings.json`.
+Vous pouvez accéder au panneau d'administration d'Etherpad à l'adresse `domain.tld/admin`. Le fichier de configuration d'Etherpad est `/var/www/etherpad/settings.json`.
 
-*Skin Builder* (accessible à cette adresse `domain.tld/pad/p/test#skinvariantsbuilder`) vous permet de personnaliser l'apparence de votre pad. Il vous donnera un paramètre à copier dans votre fichier de configuration `/var/www/etherpad/settings.json`.
+*Skin Builder* (accessible à l'adresse `domain.tld/pad/p/test#skinvariantsbuilder`) vous permet de personnaliser l'apparence de votre pad. Il vous donnera un paramètre à copier dans votre fichier de configuration `/var/www/etherpad/settings.json`.
 
 ## Documentation
 
