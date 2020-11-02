@@ -75,15 +75,6 @@ chown -R $app: $final_path
 chmod 600 $final_path/credentials.json
 
 #=================================================
-# REINSTALL DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Reinstalling dependencies..." --weight=12
-
-ynh_install_app_dependencies $pkg_dependencies
-
-ynh_install_nodejs --nodejs_version=$nodejs_version
-
-#=================================================
 # RESTORE THE POSTQRESQL DATABASE
 #=================================================
 ynh_script_progression --message="Restoring the PostgreSQL database..." --weight=2

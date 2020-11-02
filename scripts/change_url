@@ -28,7 +28,6 @@ ynh_script_progression --message="Loading installation settings..." --weight=1
 
 # Needed for helper "ynh_add_nginx_config"
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-port=$(ynh_app_setting_get --app=$app --key=port)
 
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
@@ -68,14 +67,14 @@ fi
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Stopping a systemd service..." --weight=3
+ynh_script_progression --message="Stopping a systemd service..." --time --weight=1
 
 ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # MODIFY URL IN NGINX CONF
 #=================================================
-ynh_script_progression --message="Updating NGINX web server configuration..." --weight=2
+ynh_script_progression --message="Updating NGINX web server configuration..." --time --weight=1
 
 nginx_conf_path=/etc/nginx/conf.d/$old_domain.d/$app.conf
 
@@ -106,7 +105,7 @@ fi
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=10
+ynh_script_progression --message="Starting a systemd service..." --time --weight=1
 
 ynh_systemd_action --service_name=$app --action="start" --log_path="systemd" --line_match="Your Etherpad version is" 
 
