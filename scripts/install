@@ -183,7 +183,7 @@ yunohost service add $app --description "Etherpad-lite, the collaborative editor
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
 # Start a systemd service
-ynh_systemd_action --action=restart --log_path="systemd" --line_match="You can access your Etherpad instance at"
+ynh_systemd_action --service_name=$app --action="start" --log_path="systemd" --line_match="Your Etherpad version is" 
 
 #=================================================
 # SETUP SSOWAT
