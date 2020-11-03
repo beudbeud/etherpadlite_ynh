@@ -1,8 +1,5 @@
 # Etherpad-Lite pour YunoHost
 
-> :warning: Ce paquet installe Etherpad-Lite (sans MyPads et divers plugins). Il utilise PostgreSQL comme base de données.
-> Si vous souhaitez installer Etherpad avec MyPads, utilisez le paquet [Etherpad MyPads](https://github.com/YunoHost-Apps/etherpad_mypads_ynh).
-
 [![Niveau d'intégration](https://dash.yunohost.org/integration/etherpad.svg)](https://dash.yunohost.org/appci/app/etherpad) ![](https://ci-apps.yunohost.org/ci/badges/etherpad.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/etherpad.maintain.svg)  
 [![Installer Etherpad avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=etherpad)
 
@@ -10,6 +7,9 @@
 
 > *Ce package vous permet d'installer Etherpad rapidement et simplement sur un serveur YunoHost.  
 Si vous n'avez pas YunoHost, merci de regarder [ici](https://yunohost.org/#/install_fr) pour savoir comment l'installer et en profiter.*
+
+> :warning: Ce paquet installe Etherpad-Lite (sans MyPads et divers plugins). Il utilise PostgreSQL comme base de données.
+> Si vous souhaitez installer Etherpad avec MyPads, utilisez le paquet [Etherpad MyPads](https://github.com/YunoHost-Apps/etherpad_mypads_ynh).
 
 ## Résumé
 Etherpad vous permet d'éditer des documents de manière collaborative en temps réel, un peu comme un éditeur multi-joueurs en direct qui s'exécute dans votre navigateur. Rédigez des articles, des communiqués de presse, des listes de choses à faire, etc. avec vos amis, camarades ou collègues, tous travaillant sur le même document en même temps.
