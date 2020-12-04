@@ -102,7 +102,13 @@ then
 fi
 
 #=================================================
-# GENERIC FINALISATION
+# SETUP SYSTEMD
+#=================================================
+ynh_script_progression --message="Configuring a systemd service..." --weight=4
+
+# Create a dedicated systemd config
+ynh_add_systemd_config --others_var="ynh_node_load_PATH"
+
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
