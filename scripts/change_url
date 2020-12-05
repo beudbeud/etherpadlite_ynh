@@ -114,7 +114,7 @@ ynh_systemd_action --service_name=nginx --action=reload
 ynh_script_progression --message="Starting a systemd service..." --weight=6
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --log_path="systemd" --line_match="Your Etherpad version is" --timeout="120"
+ynh_systemd_action --action=restart --log_path="systemd" --line_match="Your Etherpad version is" --timeout="120" #--service_name=$app
 
 #=================================================
 # END OF SCRIPT
