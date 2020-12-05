@@ -59,20 +59,21 @@ ynh_script_progression --message="Restoring the app main directory..." --weight=
 ynh_restore_file --origin_path="$final_path"
 
 #=================================================
+# RESTORE THE POSTQRESQL DATABASE
+#=================================================
+ynh_script_progression --message="Restoring the PostgreSQL database..." --weight=2
+
+ynh_psql_test_if_first_run
+ynh_psql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
+ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
+
+#=================================================
 # RECREATE THE DEDICATED USER
 #=================================================
 ynh_script_progression --message="Recreating the dedicated system user..." --weight=1
 
 # Create the dedicated user (if not existing)
-ynh_system_user_create --username=$app
-
-#=================================================
-# RESTORE USER RIGHTS
-#=================================================
-
-# Restore permissions on app files
-chown -R $app: $final_path
-chmod 600 $final_path/credentials.json
+ynh_system_user_create --username=$app --home_dir=$final_path
 
 #=================================================
 # REINSTALL DEPENDENCIES
@@ -86,13 +87,12 @@ ynh_install_app_dependencies $pkg_dependencies
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
-# RESTORE THE POSTQRESQL DATABASE
+# RESTORE USER RIGHTS
 #=================================================
-ynh_script_progression --message="Restoring the PostgreSQL database..." --weight=2
 
-ynh_psql_test_if_first_run
-ynh_psql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
-ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
+# Restore permissions on app files
+chown -R $app: $final_path
+chmod 600 $final_path/credentials.json
 
 #=================================================
 # RESTORE SYSTEMD
@@ -115,7 +115,7 @@ yunohost service add $app --description="Collaborative editor." --log="/var/log/
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=8
 
-ynh_systemd_action --service_name=$app --action=restart --log_path="systemd" --line_match="Your Etherpad version is" --timeout="60"
+ynh_systemd_action --service_name=$app --action=restart --log_path="systemd" --line_match="Your Etherpad version is" --timeout="120"
 
 #=================================================
 # GENERIC FINALIZATION
