@@ -95,15 +95,6 @@ chown -R $app: $final_path
 chmod 600 $final_path/credentials.json
 
 #=================================================
-# RESTORE SYSTEMD
-#=================================================
-ynh_script_progression --message="Restoring the systemd configuration..." --weight=8
-
-#ynh_restore_file --origin_path="/etc
-ynh_restore_file --origin_path="/etc/systemd/system/$app.service"
-systemctl enable $app.service --quiet
-
-#=================================================
 # INTEGRATE SERVICE IN YUNOHOST
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=3
@@ -111,11 +102,19 @@ ynh_script_progression --message="Integrating service in YunoHost..." --weight=3
 yunohost service add $app --description="Collaborative editor." --log="/var/log/$app/$app.log"
 
 #=================================================
+# RESTORE SYSTEMD
+#=================================================
+ynh_script_progression --message="Restoring the systemd configuration..." --weight=8
+
+ynh_restore_file --origin_path="/etc/systemd/system/$app.service"
+systemctl enable $app.service --quiet
+
+#=================================================
 # START SYSTEMD SERVICE
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=8
 
-ynh_systemd_action --service_name=$app --action=restart --log_path="systemd" #--line_match="Your Etherpad version is" --timeout="120"
+ynh_systemd_action --service_name=$app --action=restart --log_path="systemd" --line_match="Your Etherpad version is" --timeout="120"
 
 #=================================================
 # GENERIC FINALIZATION
