@@ -102,20 +102,19 @@ then
 fi
 
 #=================================================
-# GENERIC FINALISATION
-#=================================================
-# START SYSTEMD SERVICE
-#=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=6
-
-ynh_systemd_action --service_name=$app --action=restart --log_path="systemd" --line_match="Your Etherpad version is" 
-
-#=================================================
 # RELOAD NGINX
 #=================================================
 ynh_script_progression --message="Reloading NGINX web server..." --weight=2
 
 ynh_systemd_action --service_name=nginx --action=reload
+
+#=================================================
+# START SYSTEMD SERVICE
+#=================================================
+ynh_script_progression --message="Starting a systemd service..." --weight=6
+
+# Start a systemd service
+ynh_systemd_action --action=restart --log_path="systemd" --line_match="Your Etherpad version is" --timeout="120" #--service_name=$app
 
 #=================================================
 # END OF SCRIPT

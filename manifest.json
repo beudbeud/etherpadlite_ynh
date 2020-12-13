@@ -10,10 +10,10 @@
     "url": "https://etherpad.org/",
     "license": "Apache-2.0",
     "maintainer": {
-        "name": ""
+        "name": "eric_G"
     },
     "requirements": {
-        "yunohost": ">= 4.0.7"
+        "yunohost": ">= 4.0.8"
     },
     "multi_instance": true,
     "services": [
