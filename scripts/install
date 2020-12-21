@@ -81,14 +81,11 @@ ynh_install_nodejs --nodejs_version=$nodejs_version
 ynh_script_progression --message="Creating a PostgreSQL database..." --weight=5
 
 db_name=$(ynh_sanitize_dbid --db_name=$app)
-db_user=$db_name
-db_pwd=$(ynh_string_random --length=30)
-
 ynh_app_setting_set --app=$app --key=db_name --value=$db_name
-ynh_app_setting_set --app=$app --key=db_pwd  --value=$db_pwd
-
 ynh_psql_test_if_first_run
-ynh_psql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
+ynh_psql_setup_db --db_user=$db_name --db_name=$db_name
+
+db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -183,7 +180,7 @@ yunohost service add $app --description="Collaborative editor." --log="/var/log/
 ynh_script_progression --message="Starting a systemd service..." --weight=6
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --log_path="systemd" --line_match="Your Etherpad version is" --timeout="60"
+ynh_systemd_action --service_name=$app --action="start" --log_path="systemd" --line_match="Your Etherpad version is"
 
 #=================================================
 # SETUP SSOWAT
@@ -193,8 +190,6 @@ ynh_script_progression --message="Configuring SSOwat..." --weight=1
 # Make app public if necessary
 if [ $is_public -eq 1 ]
 then
-	# Everyone can access the app.
-	# The "main" permission is automatically created before the install script.
 	ynh_permission_update --permission "main" --add "visitors"
 fi
 
