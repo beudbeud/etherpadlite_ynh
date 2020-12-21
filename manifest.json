@@ -17,8 +17,7 @@
     },
     "multi_instance": true,
     "services": [
-        "nginx",
-        "mysql"
+        "nginx"
     ],
     "arguments": {
         "install" : [
@@ -61,8 +60,8 @@
                     "en": "Choose the application language",
                     "fr": "Choisissez la langue de l'application"
                 },
-                "choices": ["fr", "en"],
-                "default": "fr"
+                "choices": ["de", "en", "es", "fr", "it", "pt"],
+                "default": "en"
             },
             {
                 "name": "admin",

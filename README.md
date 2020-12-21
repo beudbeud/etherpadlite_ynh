@@ -1,11 +1,11 @@
 # Etherpad-Lite for YunoHost
 
 [![Integration level](https://dash.yunohost.org/integration/etherpad.svg)](https://dash.yunohost.org/appci/app/etherpad) ![](https://ci-apps.yunohost.org/ci/badges/etherpad.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/etherpad.maintain.svg)  
-[![Install Etherpad with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=etherpad)
+[![Install Etherpad-Lite with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=etherpad)
 
 *[Lire ce readme en français.](./README_fr.md)*
 
-> *This package allow you to install Etherpad quickly and simply on a YunoHost server.  
+> *This package allow you to install Etherpad-Lite quickly and simply on a YunoHost server.  
 If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
 
 > :warning: This package installs Etherpad-Lite (without MyPads and plugins). It uses PostgreSQL as a database.
