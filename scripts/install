@@ -29,6 +29,7 @@ admin=$YNH_APP_ARG_ADMIN
 is_public=$YNH_APP_ARG_IS_PUBLIC
 language=$YNH_APP_ARG_LANGUAGE
 password=$YNH_APP_ARG_PASSWORD
+export=$YNH_APP_ARG_EXPORT
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -54,6 +55,7 @@ ynh_app_setting_set --app=$app --key=admin --value=$admin
 ynh_app_setting_set --app=$app --key=is_public --value=$is_public
 ynh_app_setting_set --app=$app --key=language --value=$language
 ynh_app_setting_set --app=$app --key=password --value=$password
+ynh_app_setting_set --app=$app --key=export --value=$export
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -65,6 +67,17 @@ ynh_script_progression --message="Configuring firewall..." --weight=1
 # Find an available port
 port=$(ynh_find_port --port=9001)
 ynh_app_setting_set --app=$app --key=port --value=$port
+
+#=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Installing dependencies..." --weight=120
+
+if [ "$export" = "abiword" ]; then
+	ynh_install_app_dependencies $abiword_app_depencencies
+elif [ "$export" = "libreoffice" ]; then
+	ynh_install_app_dependencies $libreoffice_app_dependencies
+fi
 
 #=================================================
 # INSTALL DEPENDENCIES
@@ -122,7 +135,7 @@ chown -R $app: $final_path
 pushd "$final_path" || ynh_die
  	ynh_use_nodejs
  	ynh_exec_as $app env "$ynh_node_load_PATH" bin/installDeps.sh
- 	ynh_exec_as $app env "$ynh_node_load_PATH" npm install ep_headings2 ep_markdown ep_comments_page ep_align ep_page_view ep_font_color ep_webrtc ep_embedded_hyperlinks2
+ 	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install ep_headings2 ep_author_hover ep_markdown ep_comments_page ep_align ep_font_color ep_embedded_hyperlinks2
 popd || ynh_die
 
 #=================================================

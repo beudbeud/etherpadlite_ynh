@@ -21,6 +21,7 @@ port=$(ynh_app_setting_get --app=$app --key=port)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 db_user=$db_name
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+export=$(ynh_app_setting_get --app=$app --key=export)
 
 #=================================================
 # STANDARD REMOVE
@@ -42,6 +43,17 @@ ynh_script_progression --message="Stopping and removing the systemd service..." 
 
 # Remove the dedicated systemd config
 ynh_remove_systemd_config
+
+#=================================================
+# REMOVE DEPENDENCIES
+#=================================================
+
+if [ "$export" != "none" ]
+then
+	ynh_script_progression --message="Removing dependencies..." --weight=20
+	# Remove metapackage and its dependencies
+	ynh_remove_app_dependencies
+fi
 
 #=================================================
 # REMOVE THE POSTQRESQL DATABASE
