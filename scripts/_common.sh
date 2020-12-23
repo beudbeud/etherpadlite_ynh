@@ -9,6 +9,12 @@ pkg_dependencies="postgresql postgresql-contrib apt-transport-https"
 
 nodejs_version=12
 
+# Dependencies for AbiWord
+abiword_app_depencencies="abiword"
+
+# Dependencies for LibreOffice
+libreoffice_app_dependencies="unoconv libreoffice-writer"
+
 #=================================================
 # PERSONAL HELPERS
 #=================================================

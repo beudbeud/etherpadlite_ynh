@@ -128,7 +128,7 @@ ynh_system_user_create --username=$app --home_dir=$final_path
 #=================================================
 # INSTALL ETHERPAD
 #=================================================
-ynh_script_progression --message="Installing Etherpad..." --weight=90
+ynh_script_progression --message="Installing Etherpad..." --weight=60
 
 chown -R $app: $final_path
 
@@ -147,6 +147,19 @@ cp ../conf/settings.json $final_path/settings.json
 
 ynh_replace_string --match_string="__PORT__"     --replace_string="$port"     --target_file="$final_path/settings.json"
 ynh_replace_string --match_string="__LANGUAGE__" --replace_string="$language" --target_file="$final_path/settings.json"
+if [ "$export" = "abiword" ]
+then
+	# Get AbiWord binary path
+	abiword_path=`which abiword`
+	# Set the path of abiword into Etherpad config
+	ynh_replace_string --match_string="\"abiword\" : null" --replace_string="\"abiword\" : \"$abiword_path\"" --target_file="$final_path/settings.json"
+elif [ "$export" = "libreoffice" ]
+then
+	# Get soffice binary path
+	soffice_path=`which soffice`
+	# Set the path of soffice into Etherpad config
+	ynh_replace_string --match_string="\"soffice\" : null" --replace_string="\"soffice\" : \"$soffice_path\"" --target_file="$final_path/settings.json"
+fi
 
 cp ../conf/credentials.json $final_path/credentials.json
 

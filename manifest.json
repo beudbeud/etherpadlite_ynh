@@ -54,6 +54,16 @@
                 "default": true
             },
             {
+                "name": "export",
+                "type": "string",
+                "ask": {
+                    "en": "Use AbiWord (~260 Mo) or LibreOffice (~400 Mo) (more stable) to expand export possibilities (PDF, doc)?",
+                    "fr": "Utiliser AbiWord (~260 Mo) ou LibreOffice (~400 Mo) (plus stable) pour étendre les possibilités d'export (PDF, doc) ?"
+                },
+                "choices" : ["none", "abiword", "libreoffice"],
+                "default" : "none"
+            },
+            {
                 "name": "language",
                 "type": "string",
                 "ask": {
