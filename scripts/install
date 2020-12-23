@@ -122,6 +122,7 @@ chown -R $app: $final_path
 pushd "$final_path" || ynh_die
  	ynh_use_nodejs
  	ynh_exec_as $app env "$ynh_node_load_PATH" bin/installDeps.sh
+ 	ynh_exec_as $app env "$ynh_node_load_PATH" npm install ep_headings2 ep_markdown ep_comments_page ep_align ep_page_view ep_font_color ep_webrtc ep_embedded_hyperlinks2
 popd || ynh_die
 
 #=================================================
