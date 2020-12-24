@@ -261,7 +261,7 @@
    * it to null disables Abiword and will only allow plain text and HTML
    * import/exports.
    */
-  "abiword": null,
+  "abiword" : null,
 
   /*
    * This is the absolute path to the soffice executable.
@@ -269,7 +269,7 @@
    * LibreOffice can be used in lieu of Abiword to export pads.
    * Setting it to null disables LibreOffice exporting.
    */
-  "soffice": null,
+  "soffice" : null,
 
   /*
    * Path to the Tidy executable.
