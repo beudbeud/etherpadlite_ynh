@@ -44,6 +44,13 @@ test ! -d $final_path \
 	|| ynh_die --message="There is already a directory: $final_path "
 
 #=================================================
+# ACTIVATE MAINTENANCE MODE
+#=================================================
+ynh_script_progression --message="Activating maintenance mode..." --weight=2
+
+ynh_maintenance_mode_ON
+
+#=================================================
 # STANDARD RESTORATION STEPS
 #=================================================
 # RESTORE THE NGINX CONFIGURATION
@@ -116,6 +123,13 @@ ynh_script_progression --message="Starting a systemd service..." --weight=8
 
 ynh_systemd_action --service_name=$app --action=restart --log_path=systemd --line_match="Your Etherpad version is"
 sleep 120
+
+#=================================================
+# DEACTIVE MAINTENANCE MODE
+#=================================================
+ynh_script_progression --message="Disabling maintenance mode..." --weight=7
+
+ynh_maintenance_mode_OFF
 
 #=================================================
 # GENERIC FINALIZATION
