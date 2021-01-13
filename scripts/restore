@@ -99,7 +99,7 @@ chmod 600 $final_path/credentials.json
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=3
 
-yunohost service add $app --description="Collaborative editor." --log="/var/log/$app/$app.log"
+yunohost service add $app --description="Collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # RESTORE SYSTEMD
