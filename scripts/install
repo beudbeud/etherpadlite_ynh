@@ -115,7 +115,7 @@ ynh_system_user_create --username=$app --home_dir=$final_path
 #=================================================
 # INSTALL ETHERPAD
 #=================================================
-ynh_script_progression --message="Installing Etherpad..." --weight=90
+ynh_script_progression --message="Installing Etherpad..." --weight=60
 
 chown -R $app: $final_path
 
@@ -130,12 +130,10 @@ popd || ynh_die
 ynh_script_progression --message="Configuring Etherpad..." --weight=6
 
 cp ../conf/settings.json $final_path/settings.json
-
 ynh_replace_string --match_string="__PORT__"     --replace_string="$port"     --target_file="$final_path/settings.json"
 ynh_replace_string --match_string="__LANGUAGE__" --replace_string="$language" --target_file="$final_path/settings.json"
 
 cp ../conf/credentials.json $final_path/credentials.json
-
 ynh_replace_string --match_string="__DB_NAME__"  --replace_string="$db_name"  --target_file="$final_path/credentials.json"
 ynh_replace_string --match_string="__DB_PWD__"   --replace_string="$db_pwd"   --target_file="$final_path/credentials.json"
 ynh_replace_string --match_string="__ADMIN__"    --replace_string="$admin"    --target_file="$final_path/credentials.json"
