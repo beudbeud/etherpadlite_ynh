@@ -252,7 +252,7 @@
    * Not setting this may cause problems during deployment.
    * Set to 0 to disable caching.
    */
-  "maxAge": 21600, // 60 * 60 * 6 = 6 hours
+  "maxAge": 99999999, // 60 * 60 * 6 = 6 hours
 
   /*
    * Absolute path to the Abiword executable.
