@@ -90,7 +90,7 @@ ynh_maintenance_mode_ON
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=42
 
-ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name=$app --action=stop --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -140,19 +140,6 @@ pushd "$final_path" || ynh_die
  	ynh_use_nodejs
  	ynh_exec_as $app env $ynh_node_load_PATH bin/installDeps.sh
  	 	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install ep_spellcheck ep_delete_empty_pads ep_subscript_and_superscript ep_headings2 ep_author_hover ep_markdown ep_comments_page ep_align ep_font_color ep_embedded_hyperlinks2
-
-
-#  	# npm outdated --depth=0 | grep -v "^Package" | awk '{print $1}' | xargs npm install $1 --save-dev
-# OUTDATED=$(npm outdated --depth=0 | grep -v "^Package" | awk '{print $1}')
-# # echo $OUTDATED
-# if test -n "$OUTDATED"; then
-#   echo "Plugins require update, doing this now..."
-#   echo "Updating $OUTDATED"
-#   npm install $OUTDATED --save-dev
-# else
-#   echo "Plugins are all up to date"
-# fi
-
 popd || ynh_die 
 
 #=================================================
@@ -195,7 +182,7 @@ ynh_add_systemd_config --others_var="ynh_node_load_PATH"
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=2
 
-yunohost service add $app --description="Collaborative editor." --log="/var/log/$app/$app.log"
+yunohost service add $app --description="Collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # START SYSTEMD SERVICE
