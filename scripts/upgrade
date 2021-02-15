@@ -123,6 +123,14 @@ ynh_script_progression --message="Making sure dedicated system user exists..." -
 ynh_system_user_create --username=$app
 
 #=================================================
+# MODIFY A CONFIG FILE
+#=================================================
+ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
+
+ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
+ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
+
+#=================================================
 # INSTALL ETHERPAD
 #=================================================
 ynh_script_progression --message="Installing Etherpad..." --weight=90
@@ -131,16 +139,9 @@ chown -R $app: $final_path
 
 pushd $final_path || ynh_die
  	ynh_use_nodejs
+ 	ynh_secure_remove --file="$final_path/bin"
  	ynh_exec_as $app env $ynh_node_load_PATH src/bin/installDeps.sh
 popd || ynh_die 
-
-#=================================================
-# MODIFY A CONFIG FILE
-#=================================================
-ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
-
-ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
-ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
 
 #=================================================
 # GENERIC FINALIZATION
