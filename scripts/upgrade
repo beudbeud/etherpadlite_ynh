@@ -151,13 +151,21 @@ cp ../conf/settings.json $final_path/settings.json
 
 ynh_replace_string --match_string="__PORT__"     --replace_string="$port"     --target_file="$final_path/settings.json"
 ynh_replace_string --match_string="__LANGUAGE__" --replace_string="$language" --target_file="$final_path/settings.json"
+if [ "$export" = "abiword" ]
+then
+	# Get AbiWord binary path
+	abiword_path=`which abiword`
+	# Set the path of AbiWord into Etherpad config
+	ynh_replace_string --match_string="\"abiword\" : null" --replace_string="\"abiword\" : \"$abiword_path\"" --target_file="$final_path/settings.json"
+elif [ "$export" = "libreoffice" ]
+then
+	# Get soffice binary path
+	soffice_path=`which soffice`
+	# Set the path of soffice into Etherpad config
+	ynh_replace_string --match_string="\"soffice\" : null" --replace_string="\"soffice\" : \"$soffice_path\"" --target_file="$final_path/settings.json"
+fi
 
-cp ../conf/credentials.json $final_path/credentials.json
-
-ynh_replace_string --match_string="__DB_NAME__"  --replace_string="$db_name"  --target_file="$final_path/credentials.json"
-ynh_replace_string --match_string="__DB_PWD__"   --replace_string="$db_pwd"   --target_file="$final_path/credentials.json"
-ynh_replace_string --match_string="__ADMIN__"    --replace_string="$admin"    --target_file="$final_path/credentials.json"
-ynh_replace_string --match_string="__PASSWORD__" --replace_string="$password" --target_file="$final_path/credentials.json"
+ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
 
 #=================================================
 # GENERIC FINALIZATION
