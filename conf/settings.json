@@ -584,3 +584,4 @@
 
   /* Disable Admin UI tests */
   "enableAdminUITests": false
+}
