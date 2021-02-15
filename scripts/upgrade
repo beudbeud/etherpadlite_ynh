@@ -137,11 +137,24 @@ ynh_script_progression --message="Installing Etherpad..." --weight=90
 
 chown -R $app: $final_path
 
-pushd $final_path || ynh_die
- 	ynh_use_nodejs
- 	ynh_secure_remove --file="$final_path/bin"
- 	ynh_exec_as $app env $ynh_node_load_PATH src/bin/installDeps.sh
-popd || ynh_die 
+# pushd $final_path || ynh_die
+#  	ynh_use_nodejs
+#  	ynh_exec_as $app env $ynh_node_load_PATH src/bin/installDeps.sh
+# popd || ynh_die 
+
+pushd $final_path
+  mkdir -p node_modules
+  cd node_modules
+  [ -e ep_etherpad-lite ] || ln -s $final_path/src ep_etherpad-lite
+  cd ep_etherpad-lite
+  npm ci --no-optional
+popd || {
+  rm -rf $final_path/src/node_modules
+}
+
+# Remove all minified data to force node creating it new
+
+rm -f $final_path/var/minified*
 
 #=================================================
 # GENERIC FINALIZATION
