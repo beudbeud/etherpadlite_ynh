@@ -69,7 +69,7 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=12
+ynh_script_progression --message="Installing dependencies..." --weight=6
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
@@ -84,8 +84,6 @@ db_name=$(ynh_sanitize_dbid --db_name=$app)
 ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 ynh_psql_test_if_first_run
 ynh_psql_setup_db --db_user=$db_name --db_name=$db_name
-
-db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -115,7 +113,7 @@ ynh_system_user_create --username=$app --home_dir=$final_path
 #=================================================
 # INSTALL ETHERPAD
 #=================================================
-ynh_script_progression --message="Installing Etherpad..." --weight=60
+ynh_script_progression --message="Installing Etherpad..." --weight=2
 
 chown -R $app: $final_path
 
@@ -127,21 +125,10 @@ popd || ynh_die
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
-ynh_script_progression --message="Configuring Etherpad..." --weight=6
+ynh_script_progression --message="Configuring Etherpad..." --weight=60
 
-cp ../conf/settings.json $final_path/settings.json
-ynh_replace_string --match_string="__PORT__"     --replace_string="$port"     --target_file="$final_path/settings.json"
-ynh_replace_string --match_string="__LANGUAGE__" --replace_string="$language" --target_file="$final_path/settings.json"
-
-cp ../conf/credentials.json $final_path/credentials.json
-ynh_replace_string --match_string="__DB_NAME__"  --replace_string="$db_name"  --target_file="$final_path/credentials.json"
-ynh_replace_string --match_string="__DB_PWD__"   --replace_string="$db_pwd"   --target_file="$final_path/credentials.json"
-ynh_replace_string --match_string="__ADMIN__"    --replace_string="$admin"    --target_file="$final_path/credentials.json"
-ynh_replace_string --match_string="__PASSWORD__" --replace_string="$password" --target_file="$final_path/credentials.json"
-
-#=================================================
-# STORE THE CONFIG FILE CHECKSUM
-#=================================================
+ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
+ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
 
 # Calculate and store the config file checksum into the app settings
 ynh_store_file_checksum --file="$final_path/settings.json"
