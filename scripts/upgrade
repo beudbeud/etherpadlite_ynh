@@ -127,8 +127,13 @@ ynh_system_user_create --username=$app
 #=================================================
 ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
 
+ynh_backup_if_checksum_is_different --file="$final_path/settings.json"
 ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
+ynh_store_file_checksum --file="$final_path/settings.json"
+
+ynh_backup_if_checksum_is_different --file="$final_path/credentials.json"
 ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
+ynh_store_file_checksum --file="$final_path/credentials.json"
 
 #=================================================
 # INSTALL ETHERPAD

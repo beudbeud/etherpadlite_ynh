@@ -32,7 +32,7 @@ Vous pouvez accéder au panneau d'administration d'Etherpad à l'adresse `domain
 
 ## Documentation
 
- * Documentation officielle : http://etherpad.org/doc/v1.8.8
+ * Documentation officielle : http://etherpad.org/doc/v1.8.10
  * Documentation YunoHost : https://yunohost.org/#/app_etherpad
 
 ## Fonctionnalités spécifiques à YunoHost
