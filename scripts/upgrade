@@ -147,6 +147,8 @@ popd || ynh_die
 #=================================================
 ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
 
+ynh_backup_if_checksum_is_different --file="$final_path/settings.json"
+
 cp ../conf/settings.json $final_path/settings.json
 
 ynh_replace_string --match_string="__PORT__"     --replace_string="$port"     --target_file="$final_path/settings.json"
@@ -164,8 +166,11 @@ then
 	# Set the path of soffice into Etherpad config
 	ynh_replace_string --match_string="\"soffice\" : null" --replace_string="\"soffice\" : \"$soffice_path\"" --target_file="$final_path/settings.json"
 fi
+ynh_store_file_checksum --file="$final_path/settings.json"
 
+ynh_backup_if_checksum_is_different --file="$final_path/credentials.json"
 ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
+ynh_store_file_checksum --file="$final_path/credentials.json"
 
 #=================================================
 # GENERIC FINALIZATION

@@ -535,9 +535,7 @@
    */
   "logconfig" :
     { "appenders": [
-        { "type": "console"
-        //, "category": "access"// only logs pad access
-        }
+        { "type": "console"}
 
       /*
       , { "type": "file"
@@ -577,10 +575,11 @@
       */
 
       ]
-    }, // logconfig
+    },
 
   /* Override any strings found in locale directories */
   "customLocaleStrings": {},
 
   /* Disable Admin UI tests */
   "enableAdminUITests": false
+}
