@@ -70,22 +70,17 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=120
+ynh_script_progression --message="Installing dependencies..." --weight=12
+
+ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
+
+ynh_install_nodejs --nodejs_version=$nodejs_version
 
 if [ "$export" = "abiword" ]; then
 	ynh_install_app_dependencies $abiword_app_depencencies
 elif [ "$export" = "libreoffice" ]; then
 	ynh_install_app_dependencies $libreoffice_app_dependencies
 fi
-
-#=================================================
-# INSTALL DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=12
-
-ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-
-ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
 # CREATE A POSTQRESQL DATABASE
