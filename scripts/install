@@ -83,6 +83,14 @@ elif [ "$export" = "libreoffice" ]; then
 fi
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --weight=4
+
+# Create a system user
+ynh_system_user_create --username=$app --home_dir=$final_path
+
+#=================================================
 # CREATE A POSTQRESQL DATABASE
 #=================================================
 ynh_script_progression --message="Creating a PostgreSQL database..." --weight=5
@@ -109,14 +117,6 @@ ynh_script_progression --message="Configuring NGINX web server..." --weight=4
 
 # Create a dedicated NGINX config
 ynh_add_nginx_config
-
-#=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Configuring system user..." --weight=4
-
-# Create a system user
-ynh_system_user_create --username=$app --home_dir=$final_path
 
 #=================================================
 # INSTALL ETHERPAD
