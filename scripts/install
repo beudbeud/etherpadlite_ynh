@@ -140,7 +140,6 @@ ynh_store_file_checksum --file="$final_path/credentials.json"
 
 # Set permissions to app files
 chown -R $app: $final_path
-chmod 600 $final_path/settings.json
 chmod 600 $final_path/credentials.json
 
 #=================================================
