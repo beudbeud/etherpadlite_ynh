@@ -156,6 +156,7 @@ popd || ynh_die
 
 # Set permissions on app files
 chown -R $app: $final_path
+chmod o-rwx $final_path
 chmod 600 $final_path/credentials.json
 
 #=================================================
