@@ -33,7 +33,7 @@ You can access Etherpad's admin panel at `domain.tld/admin`. The configuration f
 ## Documentation
 
  * Official documentation: http://etherpad.org/doc/v1.8.13
- * YunoHost documentation: https://yunohost.org/#/app_etherpad
+ * YunoHost documentation: https://yunohost.org/en/app_etherpad
 
 ## YunoHost specific features
 
