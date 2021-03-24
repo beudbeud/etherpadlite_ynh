@@ -138,7 +138,7 @@ ynh_script_progression --message="Configuring Etherpad..." --weight=6
 
 cp ../conf/settings.json $final_path/settings.json
 
-ynh_replace_string --match_string="__PORT__"     --replace_string="$port"     --target_file="$final_path/settings.json"
+ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$final_path/settings.json"
 ynh_replace_string --match_string="__LANGUAGE__" --replace_string="$language" --target_file="$final_path/settings.json"
 if [ "$export" = "abiword" ]
 then
@@ -156,7 +156,6 @@ fi
 ynh_store_file_checksum --file="$final_path/settings.json"
 
 ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
-ynh_store_file_checksum --file="$final_path/credentials.json"
 
 #=================================================
 # GENERIC FINALIZATION
@@ -166,6 +165,7 @@ ynh_store_file_checksum --file="$final_path/credentials.json"
 
 # Set permissions to app files
 chown -R $app: $final_path
+chmod o-rwx $final_path
 chmod 600 $final_path/credentials.json
 
 #=================================================

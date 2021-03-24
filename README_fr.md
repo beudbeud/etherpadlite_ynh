@@ -14,7 +14,7 @@ Si vous n'avez pas YunoHost, merci de regarder [ici](https://yunohost.org/#/inst
 ## Résumé
 Etherpad vous permet d'éditer des documents de manière collaborative en temps réel, un peu comme un éditeur multi-joueurs en direct qui s'exécute dans votre navigateur. Rédigez des articles, des communiqués de presse, des listes de choses à faire, etc. avec vos amis, camarades ou collègues, tous travaillant sur le même document en même temps.
 
-**Version embarquée :** 1.8.12
+**Version embarquée :** 1.8.13
 
 ## Captures d'écran
 
@@ -32,8 +32,8 @@ Vous pouvez accéder au panneau d'administration d'Etherpad à l'adresse `domain
 
 ## Documentation
 
- * Documentation officielle : http://etherpad.org/doc/v1.8.10
- * Documentation YunoHost : https://yunohost.org/#/app_etherpad
+ * Documentation officielle : http://etherpad.org/doc/v1.8.13
+ * Documentation YunoHost : https://yunohost.org/fr/app_etherpad
 
 ## Fonctionnalités spécifiques à YunoHost
 

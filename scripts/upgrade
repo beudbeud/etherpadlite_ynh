@@ -158,7 +158,7 @@ ynh_backup_if_checksum_is_different --file="$final_path/settings.json"
 
 cp ../conf/settings.json $final_path/settings.json
 
-ynh_replace_string --match_string="__PORT__"     --replace_string="$port"     --target_file="$final_path/settings.json"
+ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$final_path/settings.json"
 ynh_replace_string --match_string="__LANGUAGE__" --replace_string="$language" --target_file="$final_path/settings.json"
 if [ "$export" = "abiword" ]
 then
@@ -175,9 +175,7 @@ then
 fi
 ynh_store_file_checksum --file="$final_path/settings.json"
 
-ynh_backup_if_checksum_is_different --file="$final_path/credentials.json"
 ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
-ynh_store_file_checksum --file="$final_path/credentials.json"
 
 #=================================================
 # GENERIC FINALIZATION
@@ -187,6 +185,7 @@ ynh_store_file_checksum --file="$final_path/credentials.json"
 
 # Set permissions on app files
 chown -R $app: $final_path
+chmod o-rwx $final_path
 chmod 600 $final_path/credentials.json
 
 #=================================================
