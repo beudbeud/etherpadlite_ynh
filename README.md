@@ -44,8 +44,8 @@ You can access Etherpad's admin panel at `domain.tld/admin`. The configuration f
 
 #### Supported architectures
 
-* x86-64 - [![](https://ci-apps.yunohost.org/ci/logs/etherpad%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/etherpad/)
-* ARMv8-A - [![](https://ci-apps-arm.yunohost.org/ci/logs/etherpad%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/etherpad/)
+* x86-64 - [![](https://ci-apps.yunohost.org/ci/logs/etherpad.svg)](https://ci-apps.yunohost.org/ci/apps/etherpad/)
+* ARMv8-A - [![](https://ci-apps-arm.yunohost.org/ci/logs/etherpad.svg)](https://ci-apps-arm.yunohost.org/ci/apps/etherpad/)
 
 ## Limitations
 

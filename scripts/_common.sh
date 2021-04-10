@@ -7,7 +7,7 @@
 # dependencies used by the app
 pkg_dependencies="postgresql postgresql-contrib apt-transport-https"
 
-nodejs_version=14
+nodejs_version=15
 
 # Dependencies for AbiWord
 abiword_app_depencencies="abiword"
