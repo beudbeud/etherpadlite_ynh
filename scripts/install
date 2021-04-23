@@ -118,7 +118,6 @@ chown -R $app: $final_path
 
 pushd $final_path || ynh_die
  	ynh_use_nodejs
- 	npm install -g npm@latest
  	ynh_exec_as $app env $ynh_node_load_PATH src/bin/installDeps.sh
 popd || ynh_die
 
