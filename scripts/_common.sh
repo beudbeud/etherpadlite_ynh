@@ -27,7 +27,6 @@ libreoffice_app_dependencies="unoconv libreoffice-writer"
 # FUTURE OFFICIAL HELPERS
 #=================================================
 
-
 ynh_maintenance_mode_ON () {
 	# Load value of $path_url and $domain from the config if their not set
 	if [ -z $path_url ]; then
@@ -105,21 +104,4 @@ ynh_maintenance_mode_OFF () {
 	rm "/etc/nginx/conf.d/$domain.d/maintenance.$app.conf"
 
 	systemctl reload nginx
-}
-
-
-#=================================================
-
-
-# Execute a command as another user
-# usage: ynh_exec_as USER COMMAND [ARG ...]
-ynh_exec_as() {
-  local USER=$1
-  shift 1
-
-  if [[ $USER = $(whoami) ]]; then
-    eval "$@"
-  else
-    sudo -u "$USER" "$@"
-  fi
 }

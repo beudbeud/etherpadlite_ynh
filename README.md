@@ -6,7 +6,7 @@
 *[Lire ce readme en français.](./README_fr.md)*
 
 > *This package allow you to install Etherpad-Lite quickly and simply on a YunoHost server.  
-If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
+If you don't have YunoHost, please see [here](https://yunohost.org/install) to know how to install and enjoy it.*
 
 > :warning: This package installs Etherpad-Lite (without MyPads and plugins). It uses PostgreSQL as a database.
 >If you want to install Etherpad with the MyPads plugin, use the [Etherpad MyPads package](https://github.com/YunoHost-Apps/etherpad_mypads_ynh).
