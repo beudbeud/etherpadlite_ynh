@@ -13,7 +13,7 @@
         "name": "eric_G"
     },
     "requirements": {
-        "yunohost": ">= 4.1.7"
+        "yunohost": ">= 4.2.4"
     },
     "multi_instance": true,
     "services": [
@@ -48,7 +48,7 @@
                     "en": "Choose the application language",
                     "fr": "Choisissez la langue de l'application"
                 },
-                "choices": ["de", "en", "es", "fr", "it", "pt"],
+                "choices": ["de", "en", "es", "fr", "it"],
                 "default": "en"
             },
             {

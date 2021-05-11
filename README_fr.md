@@ -6,7 +6,7 @@
 *[Read this readme in english.](./README.md)*
 
 > *Ce package vous permet d'installer Etherpad-Lite rapidement et simplement sur un serveur YunoHost.  
-Si vous n'avez pas YunoHost, merci de regarder [ici](https://yunohost.org/#/install_fr) pour savoir comment l'installer et en profiter.*
+Si vous n'avez pas YunoHost, merci de regarder [ici](https://yunohost.org/install_fr) pour savoir comment l'installer et en profiter.*
 
 > :warning: Ce paquet installe Etherpad-Lite (sans MyPads et divers plugins). Il utilise PostgreSQL comme base de données.
 > Si vous souhaitez installer Etherpad avec MyPads, utilisez le paquet [Etherpad MyPads](https://github.com/YunoHost-Apps/etherpad_mypads_ynh).
@@ -44,8 +44,8 @@ Vous pouvez accéder au panneau d'administration d'Etherpad à l'adresse `domain
 
 #### Architectures supportées
 
-* x86-64 - [![](https://ci-apps.yunohost.org/ci/logs/etherpad%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/etherpad/)
-* ARMv8-A - [![](https://ci-apps-arm.yunohost.org/ci/logs/etherpad%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/etherpad/)
+* x86-64 - [![](https://ci-apps.yunohost.org/ci/logs/etherpad.svg)](https://ci-apps.yunohost.org/ci/apps/etherpad/)
+* ARMv8-A - [![](https://ci-apps-arm.yunohost.org/ci/logs/etherpad.svg)](https://ci-apps-arm.yunohost.org/ci/apps/etherpad/)
 
 ## Limitations
 
