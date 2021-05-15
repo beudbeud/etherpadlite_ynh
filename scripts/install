@@ -124,7 +124,7 @@ popd || ynh_die
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
-ynh_script_progression --message="Configuring Etherpad..." --weight=60
+ynh_script_progression --message="Configuring Etherpad..." --weight=20
 
 ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
 ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
