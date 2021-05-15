@@ -128,7 +128,7 @@ chown -R $app: $final_path
 pushd $final_path || ynh_die
  	ynh_use_nodejs
  	ynh_exec_as $app env "$ynh_node_load_PATH" bin/installDeps.sh
- 	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install ep_spellcheck ep_countable ep_delete_empty_pads ep_subscript_and_superscript ep_headings2 ep_author_hover ep_markdown ep_comments_page ep_align ep_font_color
+ 	# ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install ep_spellcheck ep_countable ep_delete_empty_pads ep_subscript_and_superscript ep_headings2 ep_author_hover ep_markdown ep_comments_page ep_align ep_font_color
 popd || ynh_die
 
 #=================================================
@@ -174,7 +174,7 @@ chmod 600 $final_path/credentials.json
 ynh_script_progression --message="Configuring a systemd service..." --weight=4
 
 # Create a dedicated systemd config
-ynh_add_systemd_config --others_var="ynh_node_load_PATH"
+ynh_add_systemd_config
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
