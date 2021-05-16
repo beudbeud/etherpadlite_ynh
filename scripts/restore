@@ -98,8 +98,9 @@ ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
 #=================================================
 
 # Restore permissions on app files
-chown -R $app: $final_path
-chmod o-rwx $final_path
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:www-data "$final_path"
 chmod 600 $final_path/credentials.json
 
 #=================================================
