@@ -70,7 +70,7 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=12
+ynh_script_progression --message="Installing dependencies..." --weight=6
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
@@ -81,6 +81,14 @@ if [ "$export" = "abiword" ]; then
 elif [ "$export" = "libreoffice" ]; then
 	ynh_install_app_dependencies $libreoffice_app_dependencies
 fi
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --weight=4
+
+# Create a system user
+ynh_system_user_create --username=$app --home_dir=$final_path
 
 #=================================================
 # CREATE DEDICATED USER
@@ -127,8 +135,7 @@ chown -R $app: $final_path
 
 pushd $final_path || ynh_die
  	ynh_use_nodejs
- 	ynh_exec_as $app env "$ynh_node_load_PATH" bin/installDeps.sh
- 	# ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install ep_spellcheck ep_countable ep_delete_empty_pads ep_subscript_and_superscript ep_headings2 ep_author_hover ep_markdown ep_comments_page ep_align ep_font_color
+ 	ynh_exec_as $app env $ynh_node_load_PATH src/bin/installDeps.sh
 popd || ynh_die
 
 #=================================================
@@ -202,7 +209,6 @@ then
 	ynh_permission_update --permission="main" --add="visitors"
 fi
 
-# Only the admin can access the admin panel of the app (if the app has an admin panel)
 ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin
 
 #=================================================

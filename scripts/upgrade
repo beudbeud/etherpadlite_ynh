@@ -129,53 +129,18 @@ ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
-
-# Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app
-
-#=================================================
 # INSTALL ETHERPAD
 #=================================================
 ynh_script_progression --message="Installing Etherpad..." --weight=90
 
 chown -R $app: $final_path
 
-pushd "$final_path" || ynh_die
+pushd $final_path || ynh_die
  	ynh_use_nodejs
- 	ynh_exec_as $app env $ynh_node_load_PATH bin/installDeps.sh
- 	 	# ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install ep_spellcheck ep_countable ep_delete_empty_pads ep_subscript_and_superscript ep_headings2 ep_author_hover ep_markdown ep_comments_page ep_align ep_font_color
+ 	ynh_exec_as $app env $ynh_node_load_PATH src/bin/installDeps.sh
+	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm cache clean --force
+	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install --upgrade 
 popd || ynh_die 
-
-#=================================================
-# MODIFY A CONFIG FILE
-#=================================================
-# ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
-
-# ynh_backup_if_checksum_is_different --file="$final_path/settings.json"
-
-# cp ../conf/settings.json $final_path/settings.json
-
-# ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$final_path/settings.json"
-# ynh_replace_string --match_string="__LANGUAGE__" --replace_string="$language" --target_file="$final_path/settings.json"
-# if [ "$export" = "abiword" ]
-# then
-# 	# Get AbiWord binary path
-# 	abiword_path=`which abiword`
-# 	# Set the path of AbiWord into Etherpad config
-# 	ynh_replace_string --match_string="\"abiword\" : null" --replace_string="\"abiword\" : \"$abiword_path\"" --target_file="$final_path/settings.json"
-# elif [ "$export" = "libreoffice" ]
-# then
-# 	# Get soffice binary path
-# 	soffice_path=`which soffice`
-# 	# Set the path of soffice into Etherpad config
-# 	ynh_replace_string --match_string="\"soffice\" : null" --replace_string="\"soffice\" : \"$soffice_path\"" --target_file="$final_path/settings.json"
-# fi
-# ynh_store_file_checksum --file="$final_path/settings.json"
-
-# ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
 
 #=================================================
 # GENERIC FINALIZATION
