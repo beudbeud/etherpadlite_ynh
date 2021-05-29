@@ -5,8 +5,7 @@
 		admin="john"
 		language="fr"
 		is_public=1
-		password="pass"
-		port="9001"
+		password="password"
 		export="libreoffice"
 	; Checks
 		pkg_linter=1
