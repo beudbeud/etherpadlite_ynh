@@ -55,6 +55,8 @@ then
 	ynh_exec_warn_less ynh_remove_app_dependencies
 fi
 
+ynh_remove_nodejs
+
 #=================================================
 # REMOVE THE POSTQRESQL DATABASE
 #=================================================
