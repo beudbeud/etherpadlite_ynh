@@ -55,6 +55,11 @@ then
 	ynh_exec_warn_less ynh_remove_app_dependencies
 fi
 
+#=================================================
+# REMOVE NODEJS
+#=================================================
+ynh_script_progression --message="Removing NodeJS version for Etherpad..." --weight=3
+
 ynh_remove_nodejs
 
 #=================================================
