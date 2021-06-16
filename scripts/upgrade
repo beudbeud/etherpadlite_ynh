@@ -108,7 +108,6 @@ fi
 chmod 750 "$final_path"
 chmod -R o-rwx "$final_path"
 chown -R $app:www-data "$final_path"
-chmod 600 $final_path/credentials.json
 
 #=================================================
 # NGINX CONFIGURATION
@@ -132,14 +131,12 @@ ynh_install_nodejs --nodejs_version=$nodejs_version
 #=================================================
 ynh_script_progression --message="Installing Etherpad..." --weight=90
 
-chown -R $app: $final_path
-
-pushd $final_path || ynh_die
+pushd $final_path
  	ynh_use_nodejs
  	ynh_exec_as $app env "$ynh_node_load_PATH" src/bin/installDeps.sh
 	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm cache clean --force
 	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install --upgrade 
-popd || ynh_die 
+popd
 
 #=================================================
 # SETUP SYSTEMD
