@@ -101,7 +101,7 @@ then
 	ynh_script_progression --message="Upgrading source files..." --weight=1
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path" --keep="$final_path/settings.json $final_path/credentials.json"
+	ynh_setup_source --dest_dir="$final_path"
 fi
 
 # Set permissions on app files
@@ -125,6 +125,14 @@ ynh_script_progression --message="Installing dependencies..." --weight=12
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
 ynh_install_nodejs --nodejs_version=$nodejs_version
+
+#=================================================
+# MODIFY A CONFIG FILE
+#=================================================
+ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
+
+ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
+ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
 
 #=================================================
 # INSTALL ETHERPAD
