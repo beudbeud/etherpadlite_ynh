@@ -15,7 +15,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 ## Overview
 
-Online editor providing collaborative editing in real-time.
+Online editor providing collaborative editing in real-time
 
 **Shipped version:** 1.8.14~ynh1
 
