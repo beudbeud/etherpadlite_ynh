@@ -3,8 +3,8 @@
     "id": "etherpad",
     "packaging_format": 1,
     "description": {
-        "en": "Online editor providing collaborative editing in real-time.",
-        "fr": "Éditeur en ligne fournissant l'édition collaborative en temps réel."
+        "en": "Online editor providing collaborative editing in real-time",
+        "fr": "Éditeur en ligne fournissant l'édition collaborative en temps réel"
     },
     "version": "1.8.14~ynh1",
     "url": "https://etherpad.org/",
