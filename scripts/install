@@ -128,7 +128,7 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Installing Etherpad..." --weight=60
 
-chown -R $app: $final_path
+chown -R $app $final_path
 
 pushd $final_path || ynh_die
  	ynh_use_nodejs
@@ -161,7 +161,7 @@ ynh_store_file_checksum --file="$final_path/settings.json"
 
 ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
 
-chmod 600 $final_path/credentials.json
+chmod 400 $final_path/credentials.json
 
 #=================================================
 # SETUP SYSTEMD
