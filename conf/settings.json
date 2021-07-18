@@ -71,10 +71,12 @@
   "title": "Etherpad",
 
   /*
-   * favicon default name
-   * alternatively, set up a fully specified Url to your own favicon
+   * Pathname of the favicon you want to use. If null, the skin's favicon is
+   * used if one is provided by the skin, otherwise the default Etherpad favicon
+   * is used. If this is a relative path it is interpreted as relative to the
+   * Etherpad root directory.
    */
-  "favicon": "favicon.ico",
+  "favicon": null,
 
   /*
    * Skin name.
@@ -246,7 +248,7 @@
    * Not setting this may cause problems during deployment.
    * Set to 0 to disable caching.
    */
-  "maxAge": 99999999, // 60 * 60 * 6 = 6 hours
+  "maxAge": 21600, // 60 * 60 * 6 = 6 hours
 
   /*
    * Absolute path to the Abiword executable.
@@ -437,6 +439,11 @@
    */
   "loadTest": false,
 
+  /**
+  * Disable dump of objects preventing a clean exit
+  */
+  "dumpOnUncleanExit": false,
+
   /*
    * Disable indentation on new line when previous line ends with some special
    * chars (':', '[', '(', '{')
@@ -535,7 +542,9 @@
    */
   "logconfig" :
     { "appenders": [
-        { "type": "console"}
+        { "type": "console"
+        //, "category": "access"// only logs pad access
+        }
 
       /*
       , { "type": "file"

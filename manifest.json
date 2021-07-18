@@ -3,11 +3,19 @@
     "id": "etherpad",
     "packaging_format": 1,
     "description": {
-        "en": "Online editor providing collaborative editing in real-time.",
-        "fr": "Éditeur en ligne fournissant l'édition collaborative en temps réel."
+        "en": "Online editor providing collaborative editing in real-time",
+        "fr": "Éditeur en ligne fournissant l'édition collaborative en temps réel"
     },
-    "version": "1.8.13~ynh1",
+    "version": "1.8.14~ynh1",
     "url": "https://etherpad.org/",
+    "upstream": {
+        "license": "Apache-2.0",
+        "website": "https://etherpad.org/",
+        "demo": "https://video.etherpad.com/",
+        "admindoc": "http://etherpad.org/doc/v1.8.14",
+        "userdoc": "https://yunohost.org/en/app_etherpad",
+        "code": "https://github.com/ether/etherpad-lite"
+    },
     "license": "Apache-2.0",
     "maintainer": {
         "name": "eric_G"
@@ -40,6 +48,16 @@
                     "fr": "Si cette case est cochée, Etherpad sera accessible aux personnes n’ayant pas de compte. Vous pourrez changer ceci plus tard via la webadmin."
             },
                 "default": true
+            },
+            {
+                "name": "export",
+                "type": "string",
+                "ask": {
+                    "en": "Use AbiWord (~260 Mo) or LibreOffice (~400 Mo) (more stable) to expand export possibilities (PDF, doc)?",
+                    "fr": "Utiliser AbiWord (~260 Mo) ou LibreOffice (~400 Mo) (plus stable) pour étendre les possibilités d'export (PDF, doc) ?"
+                },
+                "choices" : ["none", "abiword", "libreoffice"],
+                "default" : "none"
             },
             {
                 "name": "language",

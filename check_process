@@ -1,6 +1,3 @@
-# See here for more information
-# https://github.com/YunoHost/package_check#syntax-check_process-file
-
 ;; Test complet
 	; Manifest
 		domain="domain.tld"
@@ -8,8 +5,8 @@
 		admin="john"
 		language="fr"
 		is_public=1
-		password="pass"
-		port="9001"
+		password="password"
+		export="libreoffice"
 	; Checks
 		pkg_linter=1
 		setup_sub_dir=1

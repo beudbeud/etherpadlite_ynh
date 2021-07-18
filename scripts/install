@@ -29,6 +29,7 @@ admin=$YNH_APP_ARG_ADMIN
 is_public=$YNH_APP_ARG_IS_PUBLIC
 language=$YNH_APP_ARG_LANGUAGE
 password=$YNH_APP_ARG_PASSWORD
+export=$YNH_APP_ARG_EXPORT
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -53,6 +54,7 @@ ynh_app_setting_set --app=$app --key=path --value=$path_url
 ynh_app_setting_set --app=$app --key=admin --value=$admin
 ynh_app_setting_set --app=$app --key=language --value=$language
 ynh_app_setting_set --app=$app --key=password --value=$password
+ynh_app_setting_set --app=$app --key=export --value=$export
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -74,6 +76,12 @@ ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
 ynh_install_nodejs --nodejs_version=$nodejs_version
 
+if [ "$export" = "abiword" ]; then
+	ynh_install_app_dependencies $abiword_app_depencencies
+elif [ "$export" = "libreoffice" ]; then
+	ynh_install_app_dependencies $libreoffice_app_dependencies
+fi
+
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
@@ -88,6 +96,7 @@ ynh_system_user_create --username=$app --home_dir=$final_path
 ynh_script_progression --message="Creating a PostgreSQL database..." --weight=5
 
 db_name=$(ynh_sanitize_dbid --db_name=$app)
+db_user=$db_name
 ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 ynh_psql_test_if_first_run
 ynh_psql_setup_db --db_user=$db_name --db_name=$db_name
@@ -101,6 +110,11 @@ ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir=$final_path
 
+# Set permissions to app files
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:www-data "$final_path"
+
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
@@ -112,9 +126,9 @@ ynh_add_nginx_config
 #=================================================
 # INSTALL ETHERPAD
 #=================================================
-ynh_script_progression --message="Installing Etherpad..." --weight=2
+ynh_script_progression --message="Installing Etherpad..." --weight=60
 
-chown -R $app: $final_path
+chown -R $app $final_path
 
 pushd $final_path || ynh_die
  	ynh_use_nodejs
@@ -124,21 +138,30 @@ popd || ynh_die
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
-ynh_script_progression --message="Configuring Etherpad..." --weight=60
+ynh_script_progression --message="Configuring Etherpad..." --weight=6
 
-ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
+cp ../conf/settings.json $final_path/settings.json
+
+ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$final_path/settings.json"
+ynh_replace_string --match_string="__LANGUAGE__" --replace_string="$language" --target_file="$final_path/settings.json"
+if [ "$export" = "abiword" ]
+then
+	# Get AbiWord binary path
+	abiword_path=`which abiword`
+	# Set the path of AbiWord into Etherpad config
+	ynh_replace_string --match_string="\"abiword\" : null" --replace_string="\"abiword\" : \"$abiword_path\"" --target_file="$final_path/settings.json"
+elif [ "$export" = "libreoffice" ]
+then
+	# Get soffice binary path
+	soffice_path=`which soffice`
+	# Set the path of soffice into Etherpad config
+	ynh_replace_string --match_string="\"soffice\" : null" --replace_string="\"soffice\" : \"$soffice_path\"" --target_file="$final_path/settings.json"
+fi
+ynh_store_file_checksum --file="$final_path/settings.json"
+
 ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
 
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-
-# Set permissions to app files
-chown -R $app: $final_path
-chmod o-rwx $final_path
-chmod 600 $final_path/credentials.json
+chmod 400 $final_path/credentials.json
 
 #=================================================
 # SETUP SYSTEMD

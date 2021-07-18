@@ -104,6 +104,11 @@ then
 	ynh_setup_source --dest_dir="$final_path"
 fi
 
+# Set permissions on app files
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:www-data "$final_path"
+
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
@@ -128,31 +133,19 @@ ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
 
 ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
 ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
+chmod 400 "$final_path/credentials.json"
 
 #=================================================
 # INSTALL ETHERPAD
 #=================================================
 ynh_script_progression --message="Installing Etherpad..." --weight=90
 
-chown -R $app: $final_path
-
-pushd $final_path || ynh_die
+pushd $final_path
  	ynh_use_nodejs
- 	ynh_exec_as $app env $ynh_node_load_PATH src/bin/installDeps.sh
+ 	ynh_exec_as $app env "$ynh_node_load_PATH" src/bin/installDeps.sh
 	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm cache clean --force
 	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install --upgrade 
-popd || ynh_die 
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-
-# Set permissions on app files
-chown -R $app: $final_path
-chmod o-rwx $final_path
-chmod 600 $final_path/credentials.json
+popd
 
 #=================================================
 # SETUP SYSTEMD
