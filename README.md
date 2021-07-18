@@ -21,6 +21,10 @@ Online editor providing collaborative editing in real-time
 
 **Demo:** https://video.etherpad.com/
 
+## Screenshots
+
+![](./doc/screenshots/etherpad.gif)
+
 ## Disclaimers / important information
 
 ## Configuration

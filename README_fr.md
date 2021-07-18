@@ -17,6 +17,10 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 **Démo :** https://video.etherpad.com/
 
+## Captures d'écran
+
+![](./doc/screenshots/etherpad.gif)
+
 ## Avertissements / informations importantes
 
 ## Configuration
