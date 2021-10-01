@@ -29,9 +29,6 @@ app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-db_name=$(ynh_app_setting_get --app=$app --key=db_name)
-db_user=$db_name
-db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
 
 #=================================================
 # CHECK IF ETHERPAD CAN BE RESTORED
@@ -75,20 +72,15 @@ chmod 400 $final_path/credentials.json
 #=================================================
 ynh_script_progression --message="Reinstalling dependencies..." --weight=7
 
-# Define and install dependencies
-ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-
 # Install Nodejs
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
-# RESTORE THE POSTQRESQL DATABASE
+# RESTORE THE REDIS DATABASE
 #=================================================
-ynh_script_progression --message="Restoring the PostgreSQL database..." --weight=2
+ynh_script_progression --message="Restoring the Redis database..." --weight=1
 
-ynh_psql_test_if_first_run
-ynh_psql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
-ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
+ynh_redis_restore_db
 
 #=================================================
 # RESTORE SYSTEMD

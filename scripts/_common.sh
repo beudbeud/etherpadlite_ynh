@@ -74,7 +74,10 @@ ynh_redis_restore_db() {
 # Dump a database
 #
 ynh_redis_dump_db() {
-	redis-cli SET mykey $db
+	# Declare an array to define the options of this helper.
+	local db=$1
+
+	redis-cli SET mykey "$db"
 	redis-cli --raw dump mykey | head -c-1 > $dump_location	
 }
 
