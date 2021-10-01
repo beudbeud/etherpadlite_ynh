@@ -52,8 +52,7 @@ ynh_redis_get_free_db() {
 	echo "$db"
 }
 
-# Create a master password and set up global settings
-# Please always call this script in install and restore scripts
+# Flush Redis key
 #
 # usage: ynh_redis_remove_db database
 # | arg: database - the database to erase
@@ -61,3 +60,21 @@ ynh_redis_remove_db() {
 	local db=$1
 	redis-cli -n "$db" flushall
 }
+
+
+dump_location=/var/lib/redis/dump.rdb
+#destination=/tmp/dump-$(date +"%Y%m%d").rdb
+# Restore a database
+#
+ynh_redis_restore_db() {
+	cat $dump_location | redis-cli -x restore mykey $ynh_redis_get_free_db	
+}
+
+
+# Dump a database
+#
+ynh_redis_dump_db() {
+	redis-cli SET mykey $db
+	redis-cli --raw dump mykey | head -c-1 > $dump_location	
+}
+
