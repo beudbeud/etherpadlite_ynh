@@ -38,8 +38,6 @@ db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
 #=================================================
 ynh_script_progression --message="Validating restoration parameters..." --weight=2
 
-ynh_webpath_available --domain=$domain --path_url=$path_url \
-	|| ynh_die --message="Path not available: ${domain}${path_url}"
 test ! -d $final_path \
 	|| ynh_die --message="There is already a directory: $final_path "
 
@@ -93,19 +91,26 @@ ynh_psql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
 ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
 
 #=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=3
-
-yunohost service add $app --description="Collaborative editor" --log="/var/log/$app/$app.log"
-
-#=================================================
 # RESTORE SYSTEMD
 #=================================================
 ynh_script_progression --message="Restoring the systemd configuration..." --weight=8
 
 ynh_restore_file --origin_path="/etc/systemd/system/$app.service"
 systemctl enable $app.service --quiet
+
+#=================================================
+# RESTORE THE LOGROTATE CONFIGURATION
+#=================================================
+ynh_script_progression --message="Restoring the logrotate configuration..." --weight=1
+
+ynh_restore_file --origin_path="/etc/logrotate.d/$app"
+
+#=================================================
+# INTEGRATE SERVICE IN YUNOHOST
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=3
+
+yunohost service add $app --description="Collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # START SYSTEMD SERVICE

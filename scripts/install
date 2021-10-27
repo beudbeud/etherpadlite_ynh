@@ -130,10 +130,10 @@ ynh_script_progression --message="Installing Etherpad..." --weight=60
 
 chown -R $app $final_path
 
-pushd $final_path || ynh_die
+pushd $final_path
  	ynh_use_nodejs
  	ynh_exec_as $app env $ynh_node_load_PATH src/bin/installDeps.sh
-popd || ynh_die
+popd
 
 #=================================================
 # MODIFY A CONFIG FILE
@@ -172,6 +172,16 @@ ynh_script_progression --message="Configuring a systemd service..." --weight=4
 ynh_add_systemd_config
 
 #=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SETUP LOGROTATE
+#=================================================
+ynh_script_progression --message="Configuring log rotation..." --weight=1
+
+# Use logrotate to manage application logfile(s)
+ynh_use_logrotate
+
+#=================================================
 # INTEGRATE SERVICE IN YUNOHOST
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=3
@@ -197,7 +207,7 @@ then
 	ynh_permission_update --permission="main" --add="visitors"
 fi
 
-ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin
+ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin --auth_header=false
 
 #=================================================
 # RELOAD NGINX

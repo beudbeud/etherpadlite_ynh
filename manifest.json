@@ -13,7 +13,6 @@
         "website": "https://etherpad.org/",
         "demo": "https://video.etherpad.com/",
         "admindoc": "http://etherpad.org/doc/v1.8.14",
-        "userdoc": "https://yunohost.org/en/app_etherpad",
         "code": "https://github.com/ether/etherpad-lite"
     },
     "license": "Apache-2.0",
@@ -31,8 +30,7 @@
         "install" : [
             {
                 "name": "domain",
-                "type": "domain",
-                "example": "example.com"
+                "type": "domain"
             },
             {
                 "name": "path",
@@ -71,13 +69,11 @@
             },
             {
                 "name": "admin",
-                "type": "user",
-                "example": "johndoe"
+                "type": "user"
             },
             {
                 "name": "password",
-                "type": "password",
-                "example": "Choose a password"
+                "type": "password"
             }
         ]
     }
