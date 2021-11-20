@@ -33,6 +33,20 @@ db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
 upgrade_type=$(ynh_check_app_version_changed)
 
 #=================================================
+# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
+#=================================================
+ynh_script_progression --message="Backing up Etherpad before upgrading (may take a while)..." --weight=1
+
+# Backup the current version of the app
+ynh_backup_before_upgrade
+ynh_clean_setup () {
+	# restore it if the upgrade fails
+	ynh_restore_upgradebackup
+}
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..." --weight=2
@@ -62,20 +76,6 @@ if ! ynh_permission_exists --permission="admin"; then
 fi
 
 #=================================================
-# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
-#=================================================
-ynh_script_progression --message="Backing up Etherpad before upgrading (may take a while)..." --weight=1
-
-# Backup the current version of the app
-ynh_backup_before_upgrade
-ynh_clean_setup () {
-	# restore it if the upgrade fails
-	ynh_restore_upgradebackup
-}
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
 # STOP SYSTEMD SERVICE
@@ -101,7 +101,7 @@ then
 	ynh_script_progression --message="Upgrading source files..." --weight=1
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path"
+	ynh_setup_source --dest_dir="$final_path" --keep="$final_path/settings.json $final_path/credentials.json"
 fi
 
 # Set permissions on app files
@@ -126,14 +126,14 @@ ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
 ynh_install_nodejs --nodejs_version=$nodejs_version
 
-#=================================================
-# MODIFY A CONFIG FILE
-#=================================================
-ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
+# #=================================================
+# # MODIFY A CONFIG FILE
+# #=================================================
+# ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
 
-ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
-ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
-chmod 400 "$final_path/credentials.json"
+# ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
+# ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
+# chmod 400 "$final_path/credentials.json"
 
 #=================================================
 # INSTALL ETHERPAD
