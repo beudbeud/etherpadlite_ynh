@@ -4,7 +4,7 @@
 # COMMON VARIABLES
 #=================================================
 
-nodejs_version=14
+nodejs_version=16
 
 # Dependencies for AbiWord
 abiword_app_depencencies="abiword"
@@ -80,4 +80,3 @@ ynh_redis_dump_db() {
 	redis-cli SET mykey "$db"
 	redis-cli --raw dump mykey | head -c-1 > $dump_location	
 }
-
