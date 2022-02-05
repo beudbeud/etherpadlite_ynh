@@ -100,9 +100,9 @@ ynh_system_user_create --username=$app --home_dir="$final_path"
 if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
 	ynh_script_progression --message="Upgrading source files..." --weight=1
-	ynh_secure_remove --file="$final_path"
+	#ynh_secure_remove --file="$final_path"
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path" #--keep="$final_path/settings.json $final_path/credentials.json"
+	ynh_setup_source --dest_dir="$final_path" --keep="$final_path/settings.json $final_path/credentials.json"
 fi
 
 # Set permissions on app files
@@ -141,11 +141,11 @@ ynh_install_nodejs --nodejs_version=$nodejs_version
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
-ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
+# ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
 
-ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
-ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
-chmod 400 "$final_path/credentials.json"
+# ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
+# ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
+# chmod 400 "$final_path/credentials.json"
 
 #=================================================
 # INSTALL ETHERPAD
@@ -155,8 +155,8 @@ ynh_script_progression --message="Installing Etherpad..." --weight=90
 pushd $final_path
  	ynh_use_nodejs
  	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" src/bin/installDeps.sh
-	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm cache clean --force
-	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install --upgrade 
+	#ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm cache clean --force
+	#ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install --upgrade 
 popd
 
 #=================================================
