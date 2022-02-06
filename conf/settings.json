@@ -15,6 +15,31 @@
  *
  * This is useful, for example, when running in a Docker container.
  *
+ * DETAILED RULES:
+ *   - If the environment variable is set to the string "true" or "false", the
+ *     value becomes Boolean true or false.
+ *   - If the environment variable is set to the string "null", the value
+ *     becomes null.
+ *   - If the environment variable is set to the string "undefined", the setting
+ *     is removed entirely, except when used as the member of an array in which
+ *     case it becomes null.
+ *   - If the environment variable is set to a string representation of a finite
+ *     number, the string is converted to that number.
+ *   - If the environment variable is set to any other string, including the
+ *     empty string, the value is that string.
+ *   - If the environment variable is unset and a default value is provided, the
+ *     value is as if the environment variable was set to the provided default:
+ *       - "${UNSET_VAR:}" becomes the empty string.
+ *       - "${UNSET_VAR:foo}" becomes the string "foo".
+ *       - "${UNSET_VAR:true}" and "${UNSET_VAR:false}" become true and false.
+ *       - "${UNSET_VAR:null}" becomes null.
+ *       - "${UNSET_VAR:undefined}" causes the setting to be removed (or be set
+ *         to null, if used as a member of an array).
+ *   - If the environment variable is unset and no default value is provided,
+ *     the value becomes null. THIS BEHAVIOR MAY CHANGE IN A FUTURE VERSION OF
+ *     ETHERPAD; if you want the default value to be null, you should explicitly
+ *     specify "null" as the default value.
+ *
  * EXAMPLE:
  *    "port":     "${PORT:9001}"
  *    "minify":   "${MINIFY}"
@@ -533,58 +558,6 @@
    * Valid values: DEBUG, INFO, WARN, ERROR
    */
   "loglevel": "INFO",
-
-  /*
-   * Logging configuration. See log4js documentation for further information:
-   * https://github.com/nomiddlename/log4js-node
-   *
-   * You can add as many appenders as you want here.
-   */
-  "logconfig" :
-    { "appenders": [
-        { "type": "console"
-        //, "category": "access"// only logs pad access
-        }
-
-      /*
-      , { "type": "file"
-      , "filename": "your-log-file-here.log"
-      , "maxLogSize": 1024
-      , "backups": 3 // how many log files there're gonna be at max
-      //, "category": "test" // only log a specific category
-        }
-      */
-
-      /*
-      , { "type": "logLevelFilter"
-        , "level": "warn" // filters out all log messages that have a lower level than "error"
-        , "appender":
-          {  Use whatever appender you want here  }
-        }
-      */
-
-      /*
-      , { "type": "logLevelFilter"
-        , "level": "error" // filters out all log messages that have a lower level than "error"
-        , "appender":
-          { "type": "smtp"
-          , "subject": "An error occurred in your EPL instance!"
-          , "recipients": "bar@blurdybloop.com, baz@blurdybloop.com"
-          , "sendInterval": 300 // 60 * 5 = 5 minutes -- will buffer log messages; set to 0 to send a mail for every message
-          , "transport": "SMTP", "SMTP": { // see https://github.com/andris9/Nodemailer#possible-transport-methods
-              "host": "smtp.example.com", "port": 465,
-              "secureConnection": true,
-              "auth": {
-                  "user": "foo@example.com",
-                  "pass": "bar_foo"
-              }
-            }
-          }
-        }
-      */
-
-      ]
-    }, // logconfig
 
   /* Override any strings found in locale directories */
   "customLocaleStrings": {},
