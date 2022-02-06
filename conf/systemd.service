@@ -1,5 +1,5 @@
 [Unit]
-Description=Etherpad-lite, collaborative editing of documents in real-time.
+Description=Etherpad-lite, the collaborative editor.
 After=syslog.target network.target postgresql.service
 
 [Service]
