@@ -57,13 +57,6 @@ ynh_backup --src_path="/etc/logrotate.d/$app"
 ynh_backup --src_path="/etc/systemd/system/$app.service"
 
 #=================================================
-# BACKUP THE REDIS DATABASE
-#=================================================
-ynh_print_info --message="Backing up the Redis database..."
-
-ynh_redis_dump_db
-
-#=================================================
 # END OF SCRIPT
 #=================================================
 

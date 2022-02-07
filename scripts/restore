@@ -75,13 +75,6 @@ ynh_script_progression --message="Reinstalling dependencies..." --weight=7
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
-# RESTORE THE REDIS DATABASE
-#=================================================
-ynh_script_progression --message="Restoring the Redis database..." --weight=1
-
-ynh_redis_restore_db
-
-#=================================================
 # RESTORE SYSTEMD
 #=================================================
 ynh_script_progression --message="Restoring the systemd configuration..." --weight=8
