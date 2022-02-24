@@ -23,9 +23,7 @@ final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 language=$(ynh_app_setting_get --app=$app --key=language)
 port=$(ynh_app_setting_get --app=$app --key=port)
 password=$(ynh_app_setting_get --app=$app --key=password)
-export=$(ynh_app_setting_get --app=$app --key=export)
-db_name=$(ynh_app_setting_get --app=$app --key=db_name)
-db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
+redis_db=$(ynh_app_setting_get --app=$app --key=redis_db)
 
 #=================================================
 # CHECK VERSION
@@ -52,16 +50,16 @@ ynh_abort_if_errors
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..." --weight=2
 
-# If db_name doesn't exist, create it
-if [ -z "$db_name" ]; then
-	db_name=$(ynh_sanitize_dbid --db_name=$app)
-	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
-fi
-
 # If final_path doesn't exist, create it
 if [ -z "$final_path" ]; then
 	final_path=/var/www/$app
 	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+fi
+
+# If redis_db doesn't exist, create it
+if [ -z "$redis_db" ]; then
+	redis_db=$(ynh_redis_get_free_db)
+	ynh_app_setting_get --app=$app --key=redis_db --value=$redis_db
 fi
 
 # Cleaning legacy permissions
@@ -73,7 +71,7 @@ fi
 
 if ! ynh_permission_exists --permission="admin"; then
 	# Create the required permissions
-	ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin --auth_header=false
+	ynh_permission_create --permission="admin" --url="/admin" --allowed="$admin" --auth_header="false"
 fi
 
 #=================================================
@@ -134,18 +132,7 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=12
 
-ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-
 ynh_install_nodejs --nodejs_version=$nodejs_version
-
-#=================================================
-# MODIFY A CONFIG FILE
-#=================================================
-# ynh_script_progression --message="Reconfiguring Etherpad..." --weight=6
-
-# ynh_add_config --template="../conf/settings.json" --destination="$final_path/settings.json"
-# ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
-# chmod 400 "$final_path/credentials.json"
 
 #=================================================
 # INSTALL ETHERPAD

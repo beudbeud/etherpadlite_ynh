@@ -72,8 +72,6 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=6
 
-ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-
 ynh_install_nodejs --nodejs_version=$nodejs_version
 
 if [ "$export" = "abiword" ]; then
@@ -93,13 +91,11 @@ ynh_system_user_create --username=$app --home_dir=$final_path
 #=================================================
 # CREATE A POSTQRESQL DATABASE
 #=================================================
-ynh_script_progression --message="Creating a PostgreSQL database..." --weight=5
+ynh_script_progression --message="Creating a Redis database..." --weight=5
 
-db_name=$(ynh_sanitize_dbid --db_name=$app)
-db_user=$db_name
-ynh_app_setting_set --app=$app --key=db_name --value=$db_name
-ynh_psql_test_if_first_run
-ynh_psql_setup_db --db_user=$db_name --db_name=$db_name
+# Configure redis
+redis_db=$(ynh_redis_get_free_db)
+ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -207,7 +203,7 @@ then
 	ynh_permission_update --permission="main" --add="visitors"
 fi
 
-ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin --auth_header=false
+ynh_permission_create --permission="admin" --url="/admin" --allowed="$admin" --auth_header="false"
 
 #=================================================
 # RELOAD NGINX
