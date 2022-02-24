@@ -24,6 +24,7 @@ language=$(ynh_app_setting_get --app=$app --key=language)
 port=$(ynh_app_setting_get --app=$app --key=port)
 password=$(ynh_app_setting_get --app=$app --key=password)
 redis_db=$(ynh_app_setting_get --app=$app --key=redis_db)
+export=$(ynh_app_setting_get --app=$app --key=export)
 
 #=================================================
 # CHECK VERSION
