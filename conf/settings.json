@@ -191,7 +191,7 @@
   /*
    * The default text of a pad
    */
-  "defaultPadText" : "Welcome to Etherpad!\n\nThis version of Etherpad is installed without plugins and uses Redis as database.\ndatabase backup is not fully implemented.\n\nIf you are facing an issue or want to improve this app, please open a new issue in this project: https://github.com/YunoHost-Apps/etherpad_ynh",
+  "defaultPadText" : "Welcome to Etherpad-lite!\n\nThis version of Etherpad is installed without plugins and uses Redis as database.\nBe aware, Redis database backup and restore is not fully implemented.\n\nIf you are facing an issue or want to improve this app, please open a new issue in this project: https://github.com/YunoHost-Apps/etherpad_ynh",
 
   /*
    * Default Pad behavior.
