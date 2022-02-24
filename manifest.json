@@ -64,7 +64,18 @@
                     "en": "Choose the application language",
                     "fr": "Choisissez la langue de l'application"
                 },
-                "choices": ["de", "en", "es", "fr", "it"],
+                "choices": [
+                    "ca",
+                    "de",
+                    "en",
+                    "es",
+                    "fr",
+                    "gl",
+                    "hu",
+                    "it",
+                    "nl",
+                    "pt"
+                ],
                 "default": "en"
             },
             {
