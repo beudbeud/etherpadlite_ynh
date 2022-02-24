@@ -1,3 +1,10 @@
+## Etherpad Lite
+
+This version of Etherpad is installed without plugins and uses Redis as database.
+Be aware, Redis database backup and restore is not fully implemented.
+
+If you want to install Etherpad with pugins and mysql database: https://github.com/YunoHost-Apps/etherpad_mypads_ynh",
+
 ## Configuration
 
 You can access Etherpad's admin panel at `domain.tld/admin`. The configuration file for Etherpad is at the path `/var/www/etherpad/settings.json`.
