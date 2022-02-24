@@ -75,9 +75,9 @@ ynh_script_progression --message="Installing dependencies..." --weight=6
 ynh_install_nodejs --nodejs_version=$nodejs_version
 
 if [ "$export" = "abiword" ]; then
-	ynh_install_app_dependencies $abiword_app_depencencies
+	ynh_exec_warn_less ynh_install_app_dependencies $abiword_app_depencencies
 elif [ "$export" = "libreoffice" ]; then
-	ynh_install_app_dependencies $libreoffice_app_dependencies
+	ynh_exec_warn_less ynh_install_app_dependencies $libreoffice_app_dependencies
 fi
 
 #=================================================
@@ -123,8 +123,6 @@ ynh_add_nginx_config
 # INSTALL ETHERPAD
 #=================================================
 ynh_script_progression --message="Installing Etherpad..." --weight=60
-
-chown -R $app $final_path
 
 pushd $final_path
  	ynh_use_nodejs
