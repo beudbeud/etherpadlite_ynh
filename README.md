@@ -33,7 +33,7 @@ Etherpad is a real-time collaborative editor scalable to thousands of simultaneo
 This version of Etherpad is installed without plugins and uses Redis as database.
 Be aware, Redis database backup and restore is not fully implemented.
 
-If you want to install Etherpad with pugins and mysql database: https://github.com/YunoHost-Apps/etherpad_mypads_ynh",
+If you want to install Etherpad with plugins and mysql database: https://github.com/YunoHost-Apps/etherpad_mypads_ynh",
 
 ## Configuration
 
