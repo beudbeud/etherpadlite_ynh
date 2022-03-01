@@ -18,7 +18,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 Etherpad is a real-time collaborative editor scalable to thousands of simultaneous real time users. It provides full data export capabilities, and runs on your server, under your control.
 
 
-**Shipped version:** 1.8.16~ynh1
+**Shipped version:** 1.8.17~ynh1
 
 **Demo:** https://video.etherpad.com/
 
@@ -27,6 +27,13 @@ Etherpad is a real-time collaborative editor scalable to thousands of simultaneo
 ![](./doc/screenshots/etherpad.gif)
 
 ## Disclaimers / important information
+
+## Etherpad Lite
+
+This version of Etherpad is installed without plugins and uses Redis as database.
+Be aware, Redis database backup and restore is not fully implemented.
+
+If you want to install Etherpad with pugins and mysql database: https://github.com/YunoHost-Apps/etherpad_mypads_ynh",
 
 ## Configuration
 
@@ -37,7 +44,7 @@ You can access Etherpad's admin panel at `domain.tld/admin`. The configuration f
 ## Documentation and resources
 
 * Official app website: https://etherpad.org/
-* Official admin documentation: http://etherpad.org/doc/v1.8.16
+* Official admin documentation: http://etherpad.org/doc/v1.8.17
 * Upstream app code repository: https://github.com/ether/etherpad-lite
 * YunoHost documentation for this app: https://yunohost.org/app_etherpad
 * Report a bug: https://github.com/YunoHost-Apps/etherpad_ynh/issues
