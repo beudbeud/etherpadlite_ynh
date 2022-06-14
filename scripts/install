@@ -25,9 +25,9 @@ ynh_abort_if_errors
 
 domain=$YNH_APP_ARG_DOMAIN
 path_url=$YNH_APP_ARG_PATH
-admin=$YNH_APP_ARG_ADMIN
 is_public=$YNH_APP_ARG_IS_PUBLIC
 language=$YNH_APP_ARG_LANGUAGE
+admin=$YNH_APP_ARG_ADMIN
 password="$YNH_APP_ARG_PASSWORD"
 export=$YNH_APP_ARG_EXPORT
 
@@ -73,6 +73,7 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 ynh_script_progression --message="Installing dependencies..." --weight=6
 
 ynh_install_nodejs --nodejs_version=$nodejs_version
+ynh_use_nodejs
 
 if [ "$export" = "abiword" ]; then
 	ynh_exec_warn_less ynh_install_app_dependencies $abiword_app_depencencies
@@ -125,8 +126,7 @@ ynh_add_nginx_config
 ynh_script_progression --message="Installing Etherpad..." --weight=60
 
 pushd $final_path
- 	ynh_use_nodejs
- 	ynh_exec_warn_less ynh_exec_as $app env $ynh_node_load_PATH src/bin/installDeps.sh
+ 	ynh_exec_warn_less ynh_exec_as $app env $ynh_node_load_PATH bin/installDeps.sh
 popd
 
 #=================================================
@@ -155,7 +155,11 @@ ynh_store_file_checksum --file="$final_path/settings.json"
 
 ynh_add_config --template="../conf/credentials.json" --destination="$final_path/credentials.json"
 
-chmod 400 $final_path/credentials.json
+chmod 600 "$final_path/settings.json"
+chown $app:$app "$final_path/settings.json"
+
+chmod 600 "$final_path/credentials.json"
+chown $app:$app "$final_path/credentials.json"
 
 #=================================================
 # SETUP SYSTEMD
