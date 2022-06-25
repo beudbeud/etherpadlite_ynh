@@ -9,7 +9,8 @@ Group=__APP__
 WorkingDirectory=__FINALPATH__/
 Environment="NODE_ENV=production"
 Environment="__YNH_NODE_LOAD_PATH__"
-ExecStart=__FINALPATH__/src/bin/run.sh
+ExecStart=__YNH_NODE__ __FINALPATH__/src/node/server.js
+#ExecStart=__FINALPATH__/src/bin/run.sh
 Restart=always
 
 # Sandboxing options to harden security
