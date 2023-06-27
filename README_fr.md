@@ -18,7 +18,7 @@ Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) po
 
 Etherpad est un éditeur collaboratif en temps réel évolutif pour des milliers d'utilisateurs simultanés en temps réel. Il fournit des capacités complètes d'exportation de données et s'exécute sur votre serveur, sous votre contrôle. 
 
-**Version incluse :** 1.8.17~ynh1
+**Version incluse :** 1.9.1~ynh1
 
 **Démo :** https://video.etherpad.com/
 
@@ -26,18 +26,10 @@ Etherpad est un éditeur collaboratif en temps réel évolutif pour des milliers
 
 ![Capture d’écran de Etherpad](./doc/screenshots/etherpad.gif)
 
-## Avertissements / informations importantes
-
-## Configuration
-
-Vous pouvez accéder au panneau d'administration d'Etherpad à l'adresse `domain.tld/admin`. Le fichier de configuration d'Etherpad est `/var/www/etherpad/settings.json`.
-
-*Skin Builder* (accessible à l'adresse `domain.tld/pad/p/test#skinvariantsbuilder`) vous permet de personnaliser l'apparence de votre pad. Il vous donnera un paramètre à copier dans votre fichier de configuration `/var/www/etherpad/settings.json`.
-
 ## Documentations et ressources
 
 * Site officiel de l’app : <https://etherpad.org/>
-* Documentation officielle de l’admin : <http://etherpad.org/doc/v1.8.17>
+* Documentation officielle de l’admin : <http://etherpad.org/doc/v1.9.1>
 * Dépôt de code officiel de l’app : <https://github.com/ether/etherpad-lite>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_etherpad>
 * Signaler un bug : <https://github.com/YunoHost-Apps/etherpad_ynh/issues>
