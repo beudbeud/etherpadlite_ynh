@@ -31,7 +31,6 @@ ynh_systemd_action --service_name=$app --action=stop --log_path="/var/log/$app/$
 if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
 	ynh_script_progression --message="Upgrading source files..." --weight=1
-#REMOVEME? 	#ynh_secure_remove --file="$install_dir"
 	# Download, check integrity, uncompress and patch the source from app.src
 	ynh_setup_source --dest_dir="$install_dir" --keep="$install_dir/settings.json $install_dir/credentials.json"
 fi
@@ -41,17 +40,6 @@ chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"
 
 #=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-#REMOVEME? ynh_script_progression --message="Upgrading dependencies..." --weight=5
-
-if [ "$export" = "abiword" ]; then
-#REMOVEME? 	ynh_exec_warn_less ynh_install_app_dependencies $abiword_app_depencencies
-elif [ "$export" = "libreoffice" ]; then
-#REMOVEME? 	ynh_exec_warn_less ynh_install_app_dependencies $libreoffice_app_dependencies
-fi
-
-#=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=3
@@ -59,12 +47,15 @@ ynh_script_progression --message="Upgrading NGINX web server configuration..." -
 # Create a dedicated NGINX config
 ynh_add_nginx_config
 
-#=================================================
-# INSTALL DEPENDENCIES
-#=================================================
-#REMOVEME? ynh_script_progression --message="Installing dependencies..." --weight=12
-
 ynh_install_nodejs --nodejs_version=$nodejs_version
+
+# Create a dedicated systemd config
+ynh_add_systemd_config
+
+# Use logrotate to manage app-specific logfile(s)
+ynh_use_logrotate --non-append
+
+yunohost service add $app --description="Collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # INSTALL ETHERPAD
@@ -73,33 +64,10 @@ ynh_script_progression --message="Installing Etherpad..." --weight=90
 
 pushd $install_dir
  	ynh_use_nodejs
- 	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" src/bin/installDeps.sh
+ 	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" src/bin/run.sh
 	#ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm cache clean --force
 	#ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm install --upgrade 
 popd
-
-#=================================================
-# SETUP SYSTEMD
-#=================================================
-ynh_script_progression --message="Upgrading systemd configuration..." --weight=2
-
-# Create a dedicated systemd config
-ynh_add_systemd_config
-
-#=================================================
-# SETUP LOGROTATE
-#=================================================
-ynh_script_progression --message="Upgrading logrotate configuration..." --weight=1
-
-# Use logrotate to manage app-specific logfile(s)
-ynh_use_logrotate --non-append
-
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=2
-
-yunohost service add $app --description="Collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # START SYSTEMD SERVICE

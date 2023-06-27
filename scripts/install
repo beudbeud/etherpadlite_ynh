@@ -37,14 +37,6 @@ chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"
 
 #=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Configuring NGINX web server..." --weight=4
-
-# Create a dedicated NGINX config
-ynh_add_nginx_config
-
-#=================================================
 # INSTALL ETHERPAD
 #=================================================
 ynh_script_progression --message="Installing Etherpad..." --weight=60
@@ -90,20 +82,11 @@ ynh_script_progression --message="Configuring a systemd service..." --weight=4
 # Create a dedicated systemd config
 ynh_add_systemd_config
 
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# SETUP LOGROTATE
-#=================================================
-ynh_script_progression --message="Configuring log rotation..." --weight=1
+# Create a dedicated NGINX config
+ynh_add_nginx_config
 
 # Use logrotate to manage application logfile(s)
 ynh_use_logrotate
-
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=3
 
 yunohost service add $app --description="Collaborative editor" --log="/var/log/$app/$app.log"
 
