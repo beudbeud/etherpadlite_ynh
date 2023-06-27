@@ -6,10 +6,10 @@ After=syslog.target network.target postgresql.service
 Type=simple
 User=__APP__
 Group=__APP__
-WorkingDirectory=__FINALPATH__
+WorkingDirectory=__INSTALL_DIR__
 Environment="NODE_ENV=production"
 Environment="__YNH_NODE_LOAD_PATH__"
-ExecStart=__FINALPATH__/src/bin/run.sh
+ExecStart=__INSTALL_DIR__/src/bin/run.sh
 Restart=always
 
 # Sandboxing options to harden security

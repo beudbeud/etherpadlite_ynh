@@ -12,16 +12,16 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression --message="Loading installation settings..." --weight=1
+#REMOVEME? ynh_script_progression --message="Loading installation settings..." --weight=1
 
-app=$YNH_APP_INSTANCE_NAME
+#REMOVEME? app=$YNH_APP_INSTANCE_NAME
 
-domain=$(ynh_app_setting_get --app=$app --key=domain)
-port=$(ynh_app_setting_get --app=$app --key=port)
-final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-redis_db=$(ynh_app_setting_get --app=$app --key=redis_db)
-export=$(ynh_app_setting_get --app=$app --key=export)
-redis_db=$(ynh_app_setting_get --app=$app --key=redis_db)
+#REMOVEME? domain=$(ynh_app_setting_get --app=$app --key=domain)
+#REMOVEME? port=$(ynh_app_setting_get --app=$app --key=port)
+#REMOVEME? #REMOVEME? install_dir=$(ynh_app_setting_get --app=$app --key=install_dir)
+#REMOVEME? redis_db=$(ynh_app_setting_get --app=$app --key=redis_db)
+#REMOVEME? export=$(ynh_app_setting_get --app=$app --key=export)
+#REMOVEME? redis_db=$(ynh_app_setting_get --app=$app --key=redis_db)
 
 #=================================================
 # STANDARD REMOVE
@@ -58,9 +58,9 @@ ynh_remove_logrotate
 
 if [ "$export" != "none" ]
 then
-	ynh_script_progression --message="Removing dependencies..." --weight=20
+#REMOVEME? 	ynh_script_progression --message="Removing dependencies..." --weight=20
 	# Remove metapackage and its dependencies
-	ynh_exec_warn_less ynh_remove_app_dependencies
+#REMOVEME? 	ynh_exec_warn_less ynh_remove_app_dependencies
 fi
 
 #=================================================
@@ -83,7 +83,7 @@ ynh_redis_remove_db "$redis_db"
 ynh_script_progression --message="Removing Etherpad main directory..." --weight=3
 
 # Remove the app directory securely
-ynh_secure_remove --file="$final_path"
+#REMOVEME? ynh_secure_remove --file="$install_dir"
 
 #=================================================
 # REMOVE NGINX CONFIGURATION
@@ -108,10 +108,10 @@ ynh_secure_remove --file="/var/log/$app"
 #=================================================
 # REMOVE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Removing the dedicated system user..." --weight=1
+#REMOVEME? ynh_script_progression --message="Removing the dedicated system user..." --weight=1
 
 # Delete a system user
-ynh_system_user_delete --username=$app
+#REMOVEME? ynh_system_user_delete --username=$app
 
 #=================================================
 # END OF SCRIPT

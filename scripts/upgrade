@@ -12,19 +12,19 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression --message="Loading installation settings..." --weight=1
+#REMOVEME? ynh_script_progression --message="Loading installation settings..." --weight=1
 
-app=$YNH_APP_INSTANCE_NAME
+#REMOVEME? app=$YNH_APP_INSTANCE_NAME
 
-domain=$(ynh_app_setting_get --app=$app --key=domain)
-path_url=$(ynh_app_setting_get --app=$app --key=path)
-admin=$(ynh_app_setting_get --app=$app --key=admin)
-final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-language=$(ynh_app_setting_get --app=$app --key=language)
-port=$(ynh_app_setting_get --app=$app --key=port)
-password=$(ynh_app_setting_get --app=$app --key=password)
-redis_db=$(ynh_app_setting_get --app=$app --key=redis_db)
-export=$(ynh_app_setting_get --app=$app --key=export)
+#REMOVEME? domain=$(ynh_app_setting_get --app=$app --key=domain)
+#REMOVEME? path=$(ynh_app_setting_get --app=$app --key=path)
+#REMOVEME? admin=$(ynh_app_setting_get --app=$app --key=admin)
+#REMOVEME? #REMOVEME? install_dir=$(ynh_app_setting_get --app=$app --key=install_dir)
+#REMOVEME? language=$(ynh_app_setting_get --app=$app --key=language)
+#REMOVEME? port=$(ynh_app_setting_get --app=$app --key=port)
+#REMOVEME? password=$(ynh_app_setting_get --app=$app --key=password)
+#REMOVEME? redis_db=$(ynh_app_setting_get --app=$app --key=redis_db)
+#REMOVEME? export=$(ynh_app_setting_get --app=$app --key=export)
 
 #=================================================
 # CHECK VERSION
@@ -38,23 +38,23 @@ upgrade_type=$(ynh_check_app_version_changed)
 ynh_script_progression --message="Backing up Etherpad before upgrading (may take a while)..." --weight=1
 
 # Backup the current version of the app
-ynh_backup_before_upgrade
-ynh_clean_setup () {
+#REMOVEME? ynh_backup_before_upgrade
+#REMOVEME? ynh_clean_setup () {
 	# restore it if the upgrade fails
-	ynh_restore_upgradebackup
+#REMOVEME? 	ynh_restore_upgradebackup
 }
 # Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
+#REMOVEME? ynh_abort_if_errors
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..." --weight=2
 
-# If final_path doesn't exist, create it
-if [ -z "$final_path" ]; then
-	final_path=/var/www/$app
-	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+# If install_dir doesn't exist, create it
+if [ -z "$install_dir" ]; then
+#REMOVEME? 	install_dir=/var/www/$app
+#REMOVEME? 	ynh_app_setting_set --app=$app --key=install_dir --value=$install_dir
 fi
 
 # If redis_db doesn't exist, create it
@@ -64,15 +64,15 @@ if [ -z "$redis_db" ]; then
 fi
 
 # Cleaning legacy permissions
-if ynh_legacy_permissions_exists; then
-	ynh_legacy_permissions_delete_all
+#REMOVEME? if ynh_legacy_permissions_exists; then
+#REMOVEME? 	ynh_legacy_permissions_delete_all
 
 	ynh_app_setting_delete --app=$app --key=is_public
 fi
 
-if ! ynh_permission_exists --permission="admin"; then
+#REMOVEME? if ! ynh_permission_exists --permission="admin"; then
 	# Create the required permissions
-	ynh_permission_create --permission="admin" --url="/admin" --allowed="$admin" --auth_header="false"
+#REMOVEME? 	ynh_permission_create --permission="admin" --url="/admin" --allowed="$admin" --auth_header="false"
 fi
 
 #=================================================
@@ -87,10 +87,10 @@ ynh_systemd_action --service_name=$app --action=stop --log_path="/var/log/$app/$
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
+#REMOVEME? ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
 
 # Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app --home_dir="$final_path"
+#REMOVEME? ynh_system_user_create --username=$app --home_dir="$install_dir"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -99,25 +99,25 @@ ynh_system_user_create --username=$app --home_dir="$final_path"
 if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
 	ynh_script_progression --message="Upgrading source files..." --weight=1
-	#ynh_secure_remove --file="$final_path"
+#REMOVEME? 	#ynh_secure_remove --file="$install_dir"
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path" --keep="$final_path/settings.json $final_path/credentials.json"
+	ynh_setup_source --dest_dir="$install_dir" --keep="$install_dir/settings.json $install_dir/credentials.json"
 fi
 
 # Set permissions on app files
-chmod 750 "$final_path"
-chmod -R o-rwx "$final_path"
-chown -R $app:www-data "$final_path"
+chmod 750 "$install_dir"
+chmod -R o-rwx "$install_dir"
+chown -R $app:www-data "$install_dir"
 
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=5
+#REMOVEME? ynh_script_progression --message="Upgrading dependencies..." --weight=5
 
 if [ "$export" = "abiword" ]; then
-	ynh_exec_warn_less ynh_install_app_dependencies $abiword_app_depencencies
+#REMOVEME? 	ynh_exec_warn_less ynh_install_app_dependencies $abiword_app_depencencies
 elif [ "$export" = "libreoffice" ]; then
-	ynh_exec_warn_less ynh_install_app_dependencies $libreoffice_app_dependencies
+#REMOVEME? 	ynh_exec_warn_less ynh_install_app_dependencies $libreoffice_app_dependencies
 fi
 
 #=================================================
@@ -131,7 +131,7 @@ ynh_add_nginx_config
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=12
+#REMOVEME? ynh_script_progression --message="Installing dependencies..." --weight=12
 
 ynh_install_nodejs --nodejs_version=$nodejs_version
 
@@ -140,7 +140,7 @@ ynh_install_nodejs --nodejs_version=$nodejs_version
 #=================================================
 ynh_script_progression --message="Installing Etherpad..." --weight=90
 
-pushd $final_path
+pushd $install_dir
  	ynh_use_nodejs
  	ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" src/bin/installDeps.sh
 	#ynh_exec_warn_less ynh_exec_as $app env "$ynh_node_load_PATH" npm cache clean --force
@@ -180,9 +180,9 @@ ynh_systemd_action --service_name=$app --action=restart --log_path=systemd --lin
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading NGINX web server..." --weight=2
+#REMOVEME? ynh_script_progression --message="Reloading NGINX web server..." --weight=2
 
-ynh_systemd_action --service_name=nginx --action=reload
+#REMOVEME? ynh_systemd_action --service_name=nginx --action=reload
 
 #=================================================
 # END OF SCRIPT
