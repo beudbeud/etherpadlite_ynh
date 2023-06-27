@@ -12,15 +12,9 @@ source /usr/share/yunohost/helpers
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-#REMOVEME? ynh_script_progression --message="Installing dependencies..." --weight=6
+ynh_script_progression --message="Installing dependencies..." --weight=6
 
 ynh_install_nodejs --nodejs_version=$nodejs_version
-
-if [ "$export" = "abiword" ]; then
-#REMOVEME? 	ynh_exec_warn_less ynh_install_app_dependencies $abiword_app_depencencies
-elif [ "$export" = "libreoffice" ]; then
-#REMOVEME? 	ynh_exec_warn_less ynh_install_app_dependencies $libreoffice_app_dependencies
-fi
 
 #=================================================
 # CREATE A POSTQRESQL DATABASE
@@ -57,7 +51,7 @@ ynh_script_progression --message="Installing Etherpad..." --weight=60
 
 pushd $install_dir
  	ynh_use_nodejs
- 	ynh_exec_warn_less ynh_exec_as $app env $ynh_node_load_PATH src/bin/installDeps.sh
+ 	ynh_exec_warn_less ynh_exec_as $app env $ynh_node_load_PATH src/bin/run.sh
 popd
 
 #=================================================
