@@ -17,7 +17,7 @@ admindoc = "http://etherpad.org/doc/v1.9.1"
 code = "https://github.com/ether/etherpad-lite"
 
 [integration]
-yunohost = ">= 11.1.21"
+yunohost = ">= 11.2"
 architectures = "all"
 multi_instance = true
 ldap = true
@@ -62,8 +62,8 @@ ram.runtime = "50M"
 
 [resources]
         [resources.sources.main]
-        url = "https://github.com/ether/etherpad-lite/archive/1.9.1.tar.gz"
-        sha256 = "667741235a2bcd8d28a32f5e611b82fb2ea7d11525ff41b8b5478b05a987b047"
+        url = "https://github.com/ether/etherpad-lite/archive/1.9.2.tar.gz"
+        sha256 = "7d8168cdb6d6ca84ee48978e8c654f75703d6431203c756ba55c50aa54cc75a3"
 
     [resources.ports]
 
@@ -88,4 +88,4 @@ ram.runtime = "50M"
               echo "abiword"
           fi
     """
-
+    
