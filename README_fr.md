@@ -5,15 +5,16 @@ It shall NOT be edited by hand.
 
 # Etherpad pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/etherpad.svg)](https://dash.yunohost.org/appci/app/etherpad) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/etherpad.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/etherpad.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/etherpad.svg)](https://dash.yunohost.org/appci/app/etherpad) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/etherpad.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/etherpad.maintain.svg)
+
 [![Installer Etherpad avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=etherpad)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer Etherpad rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer Etherpad rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 Etherpad est un éditeur collaboratif en temps réel évolutif pour des milliers d'utilisateurs simultanés en temps réel. Il fournit des capacités complètes d'exportation de données et s'exécute sur votre serveur, sous votre contrôle. 
 
@@ -21,9 +22,9 @@ Etherpad est un éditeur collaboratif en temps réel évolutif pour des milliers
 
 **Démo :** https://video.etherpad.com/
 
-## Captures d'écran
+## Captures d’écran
 
-![Capture d'écran de Etherpad](./doc/screenshots/etherpad.gif)
+![Capture d’écran de Etherpad](./doc/screenshots/etherpad.gif)
 
 ## Avertissements / informations importantes
 
@@ -35,9 +36,9 @@ Vous pouvez accéder au panneau d'administration d'Etherpad à l'adresse `domain
 
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://etherpad.org/>
-* Documentation officielle de l'admin : <http://etherpad.org/doc/v1.8.18>
-* Dépôt de code officiel de l'app : <https://github.com/ether/etherpad-lite>
+* Site officiel de l’app : <https://etherpad.org/>
+* Documentation officielle de l’admin : <http://etherpad.org/doc/v1.8.18>
+* Dépôt de code officiel de l’app : <https://github.com/ether/etherpad-lite>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_etherpad>
 * Signaler un bug : <https://github.com/YunoHost-Apps/etherpad_ynh/issues>
 
@@ -53,4 +54,4 @@ ou
 sudo yunohost app upgrade etherpad -u https://github.com/YunoHost-Apps/etherpad_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>
