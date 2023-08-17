@@ -15,6 +15,7 @@ source /usr/share/yunohost/helpers
 ynh_script_progression --message="Installing dependencies..." --weight=6
 
 ynh_install_nodejs --nodejs_version=$nodejs_version
+ynh_use_nodejs
 
 #=================================================
 # CREATE A POSTQRESQL DATABASE
