@@ -35,7 +35,6 @@ then
 	ynh_setup_source --dest_dir="$install_dir" --keep="$install_dir/settings.json $install_dir/credentials.json"
 fi
 
-# Set permissions on app files
 chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"
 
