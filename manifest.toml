@@ -79,7 +79,7 @@ ram.runtime = "50M"
     admin.auth_header = false
 
     [resources.apt]
-    packages = "mariadb-server"
+    packages = "postgresql"
     
     packages_from_raw_bash = """
           if [[ "$export" == "libreoffice" ]]
@@ -90,4 +90,7 @@ ram.runtime = "50M"
               echo "abiword"
           fi
     """
+
+    [resources.database]
+    type = "postgresql"
     
