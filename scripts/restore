@@ -30,6 +30,13 @@ ynh_script_progression --message="Reinstalling dependencies..." --weight=7
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
+# RESTORE THE POSTGRESQL DATABASE
+#=================================================
+ynh_script_progression --message="Restoring the PostgreSQL database..." --weight=6
+
+ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
+
+#=================================================
 # RESTORE SYSTEMD
 #=================================================
 ynh_script_progression --message="Restoring the systemd configuration..." --weight=8

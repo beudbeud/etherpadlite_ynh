@@ -15,16 +15,6 @@ source /usr/share/yunohost/helpers
 ynh_script_progression --message="Installing dependencies..." --weight=6
 
 ynh_install_nodejs --nodejs_version=$nodejs_version
-ynh_use_nodejs
-
-#=================================================
-# CREATE A POSTQRESQL DATABASE
-#=================================================
-ynh_script_progression --message="Creating a Redis database..." --weight=5
-
-# Configure redis
-redis_db=$(ynh_redis_get_free_db)
-ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -44,7 +34,6 @@ ynh_script_progression --message="Installing Etherpad..." --weight=60
 
 pushd $install_dir
  	ynh_use_nodejs
- 	#ynh_exec_warn_less ynh_exec_as $app env $ynh_node_load_PATH src/bin/run.sh
  	ynh_exec_warn_less ynh_exec_as $app env $ynh_node_load_PATH bin/installDeps.sh
 popd
 
