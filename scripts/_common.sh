@@ -4,13 +4,7 @@
 # COMMON VARIABLES
 #=================================================
 
-nodejs_version=18
-
-# Dependencies for AbiWord
-abiword_app_depencencies="abiword"
-
-# Dependencies for LibreOffice
-libreoffice_app_dependencies="unoconv libreoffice-writer"
+nodejs_version=20
 
 #=================================================
 # PERSONAL HELPERS

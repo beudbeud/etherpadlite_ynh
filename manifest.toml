@@ -1,0 +1,93 @@
+packaging_format = 2
+
+id = "etherpad"
+name = "Etherpad"
+description.en = "Online editor providing collaborative editing in real-time"
+description.fr = "Éditeur en ligne fournissant l'édition collaborative en temps réel"
+
+version = "1.9.2~ynh1"
+
+maintainers = ["eric_G"]
+
+[upstream]
+license = "Apache-2.0"
+website = "https://etherpad.org/"
+demo = "https://video.etherpad.com/"
+admindoc = "http://etherpad.org/doc/v1.9.2"
+code = "https://github.com/ether/etherpad-lite"
+
+[integration]
+yunohost = ">= 11.2"
+architectures = "all"
+multi_instance = true
+ldap = true
+sso = true
+disk = "50M"
+ram.build = "2G"
+ram.runtime = "50M"
+
+[install]
+    [install.domain]
+    type = "domain"
+
+    [install.path]
+    type = "path"
+    default = "/etherpad"
+
+    [install.init_main_permission]
+    help.en = "If enabled, Etherpad will be accessible by people who do not have an account. This can be changed later via the webadmin."
+    help.fr = "Si cette case est cochée, Etherpad sera accessible aux personnes n’ayant pas de compte. Vous pourrez changer ceci plus tard via la webadmin."
+    type = "group"
+    default = "visitors"
+
+    [install.export]
+    ask.en = "Use AbiWord (~260 Mo) or LibreOffice (~400 Mo) (more stable) to expand export possibilities (PDF, doc)?"
+    ask.fr = "Utiliser AbiWord (~260 Mo) ou LibreOffice (~400 Mo) (plus stable) pour étendre les possibilités d'export (PDF, doc) ?"
+    type = "select"
+    choices = ["none", "abiword", "libreoffice"]
+    default = "none"
+
+    [install.language]
+    ask.en = "Choose the application language"
+    ask.fr = "Choisissez la langue de l'application"
+    type = "select"
+    choices = ["ca", "de", "en", "es", "fr", "gl", "hu", "it", "nl", "pt"]
+    default = "en"
+
+    [install.admin]
+    type = "user"
+
+    [install.password]
+    type = "password"
+
+[resources]
+        [resources.sources.main]
+        url = "https://github.com/ether/etherpad-lite/archive/1.9.2.tar.gz"
+        sha256 = "7d8168cdb6d6ca84ee48978e8c654f75703d6431203c756ba55c50aa54cc75a3"
+        autoupdate.strategy = "latest_github_tag"
+
+    [resources.ports]
+
+    [resources.system_user]
+
+    [resources.install_dir]
+
+    [resources.permissions]
+    main.url = "/"
+    admin.url = "/admin"
+    admin.allowed = ["admins"]
+    admin.auth_header = false
+
+    [resources.apt]
+    packages = "mariadb-server"
+    
+    packages_from_raw_bash = """
+          if [[ "$export" == "libreoffice" ]]
+          then 
+              echo "unoconv libreoffice-writer"
+          elif [[ "$export" == "abiword" ]]
+          then
+              echo "abiword"
+          fi
+    """
+    

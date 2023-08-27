@@ -1,5 +1,3 @@
-## Etherpad Lite
-
 This version of Etherpad is installed without plugins and uses Redis as database.
 Be aware, Redis database backup and restore is not fully implemented.
 
