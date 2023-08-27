@@ -4,10 +4,7 @@
 # COMMON VARIABLES
 #=================================================
 
-nodejs_version=18
-
-# Dependencies for AbiWord
-abiword_app_depencencies="abiword"
+nodejs_version=20
 
 #=================================================
 # PERSONAL HELPERS
