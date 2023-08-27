@@ -29,7 +29,7 @@ Etherpad est un éditeur collaboratif en temps réel évolutif pour des milliers
 ## Documentations et ressources
 
 * Site officiel de l’app : <https://etherpad.org/>
-* Documentation officielle de l’admin : <http://etherpad.org/doc/v1.9.1>
+* Documentation officielle de l’admin : <http://etherpad.org/doc/v1.9.2>
 * Dépôt de code officiel de l’app : <https://github.com/ether/etherpad-lite>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_etherpad>
 * Signaler un bug : <https://github.com/YunoHost-Apps/etherpad_ynh/issues>
