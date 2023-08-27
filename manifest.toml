@@ -64,6 +64,7 @@ ram.runtime = "50M"
         [resources.sources.main]
         url = "https://github.com/ether/etherpad-lite/archive/1.9.2.tar.gz"
         sha256 = "7d8168cdb6d6ca84ee48978e8c654f75703d6431203c756ba55c50aa54cc75a3"
+        autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
 
@@ -79,6 +80,7 @@ ram.runtime = "50M"
 
     [resources.apt]
     packages = "mariadb-server"
+    
     packages_from_raw_bash = """
           if [[ "$export" == "libreoffice" ]]
           then 
