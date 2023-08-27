@@ -30,7 +30,7 @@ Etherpad is a real-time collaborative editor scalable to thousands of simultaneo
 ## Documentation and resources
 
 * Official app website: <https://etherpad.org/>
-* Official admin documentation: <http://etherpad.org/doc/v1.9.1>
+* Official admin documentation: <http://etherpad.org/doc/v1.9.2>
 * Upstream app code repository: <https://github.com/ether/etherpad-lite>
 * YunoHost documentation for this app: <https://yunohost.org/app_etherpad>
 * Report a bug: <https://github.com/YunoHost-Apps/etherpad_ynh/issues>
